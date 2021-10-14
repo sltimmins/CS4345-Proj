@@ -1,0 +1,15 @@
+version: "3.3"
+
+services:
+  webscraper:
+#    image: gcr.io/$CLOUD_RUN_PROJECT_ID/$REPO_NAME:$GITHUB_SHA
+    build: ./webscraper/src
+    # working directory in container to place files
+    working_dir: /app
+    restart: unless-stopped
+    # map code volumes from local to inside working directory, changes made locally will update into the container
+    volumes:
+      - './webscraper/src:/app'
+    ports:
+      - "8000:8000"
+    command: go run app/main.go
