@@ -16,6 +16,12 @@ func main(){
 			"main": fileContents,
 		})
 	})
+	r.GET("/api/Nike", func(c *gin.Context) {
+		fileContents := scrapers.CheckFile("./nikeSizes.json")
+		c.JSON(200, gin.H{
+			"main": fileContents,
+		})
+	})
 	// Determine port for HTTP service.
 	port := os.Getenv("PORT")
 	if port == "" {
