@@ -4,9 +4,9 @@ import (
 	"encoding/json"
 	"fmt"
 	"github.com/gocolly/colly"
+	url2 "net/url"
 	"os"
 	"strings"
-	url2 "net/url"
 )
 
 func ParseAmazonSizes(url string) interface{}{
@@ -212,11 +212,163 @@ func ParseNikeSizes(url string) interface{}{
 
 	return &sizeChart
 }
+func ParseHMSizes(url string) interface{}{
+	//Create a new collector which will be in charge of collect the data from HTML
+	c := colly.NewCollector(
+		colly.UserAgent("Mozilla/5.0"),
+	)
+
+	//Slices to store the data
+	//var lastSize string
+	sizes :=  map[string]map[string]map[string][]string{}
+	sizeArr := make([]string, 0, 15)
+	clothingElem := make([]string, 0, 20)
+	//body := []string{"Chest", "Sleeve Length"}
+	//onHTML function allows the collector to use a callback function when the specific HTML tag is reached
+	//in this case whenever our collector finds an
+	//anchor tag with href it will call the anonymous function
+	// specified below which will get the info from the href and append it to our slice
+	c.OnHTML(".toggle-list-headline", func(elem *colly.HTMLElement) {
+		elem.ForEach("button", func(ind int, inner *colly.HTMLElement) {
+			fmt.Println(inner.Text)
+			clothingElem = append(clothingElem, inner.Text)
+		})
+	})
+
+	extra := 0
+
+	c.OnHTML(".table-scrollable", func(elem *colly.HTMLElement) {
+		elem.ForEach(".size-guide tbody", func(i int, inner *colly.HTMLElement) {
+			i = extra
+			if i > len(clothingElem) {
+				return
+			}
+			inner.ForEach("tr", func(j int, inner2 *colly.HTMLElement) {
+				bodyPart := ""
+				if j == 0 {
+					inner2.ForEach("th b", func(x int, inner3 *colly.HTMLElement) {
+						if x > 0 {
+							sizeArr = append(sizeArr, inner3.Text)
+							if x > 2 {
+								sizeArr = append(sizeArr, inner3.Text)
+							}
+						}
+					})
+				} else if j == 1 {
+					inner2.ForEach("th b", func(x int, inner3 *colly.HTMLElement) {
+						if x > 0 {
+							sizeArr = append(sizeArr, inner3.Text)
+						}
+					})
+				} else if j > 2 {
+					inner2.ForEach("th,td", func(x int, inner3 *colly.HTMLElement) {
+						if x == 0 {
+							bodyPart = inner3.Text
+						} else {
+							if sizes[clothingElem[i]] == nil {
+								sizes[clothingElem[i]] = map[string]map[string][]string{}
+							}
+							if sizes[clothingElem[i]][sizeArr[x-1]] == nil {
+								sizes[clothingElem[i]][sizeArr[x-1]] = map[string][]string{}
+							}
+							if sizes[clothingElem[i]][sizeArr[x-1]][bodyPart] == nil {
+								sizes[clothingElem[i]][sizeArr[x-1]][bodyPart] = []string{}
+							}
+							sizes[clothingElem[i]][sizeArr[x-1]][bodyPart] = append(sizes[clothingElem[i]][sizeArr[x-1]][bodyPart], inner3.Text)
+						}
+					})
+				}
+			})
+			extra = i + 1
+		})
+	})
+
+	//Command to visit the website
+	c.Visit(url)
+
+
+	return &sizes
+}
+
+func ParseZaraSizes(url string) interface{}{
+	//Create a new collector which will be in charge of collect the data from HTML
+	c := colly.NewCollector(
+		colly.UserAgent("Mozilla/5.0"),
+	)
+
+	//Slices to store the data
+	//var lastSize string
+	sizes :=  map[string]map[string]map[string][]string{}
+	//sizeArr := make([]string, 0, 15)
+	//body := []string{"Chest", "Sleeve Length"}
+	//onHTML function allows the collector to use a callback function when the specific HTML tag is reached
+	//in this case whenever our collector finds an
+	//anchor tag with href it will call the anonymous function
+	// specified below which will get the info from the href and append it to our slice
+
+	c.OnHTML("body", func(elem *colly.HTMLElement) {
+		elem.ForEach(".chart", func(i int, inner *colly.HTMLElement) {
+			types := []string{}
+			elem.ForEach("table thead th", func(j int, inner2 *colly.HTMLElement) {
+				types = append(types, inner2.Text)
+				fmt.Println(inner2.Text)
+				elem.ForEach("table tbody tr", func(r int, rows *colly.HTMLElement) {
+					size := ""
+					title := ""
+					rows.ForEach("td", func(x int, inner3 *colly.HTMLElement) {
+						if x == 0 {
+							size = inner3.Text
+							inner.ForEach("h2", func(y int, inner4 *colly.HTMLElement) {
+								fmt.Println(inner4.Text)
+								title = strings.TrimSpace(inner4.Text)
+							})
+						} else {
+							if x == j {
+								if sizes[title] == nil {
+									sizes[title] = map[string]map[string][]string{}
+								}
+								if sizes[title][size] == nil {
+									sizes[title][size] = map[string][]string{}
+								}
+								if sizes[title][size][inner2.Text] == nil {
+									sizes[title][size][inner2.Text] = []string{}
+								}
+								sizes[title][size][inner2.Text] = append(sizes[title][size][inner2.Text], inner3.Text)
+							}
+						}
+					})
+				})
+			})
+
+			if len(types) == 4 {
+				fmt.Println(types)
+			}
+		})
+		//jsonData := elem.Text[strings.Index(elem.Text, "{") : len(elem.Text)-1]
+		//fmt.Println(elem.Text, jsonData)
+		//num++
+		//fmt.Println(elem.Text)
+	})
+
+
+	//Command to visit the website
+	c.Visit(url)
+
+	fmt.Println(sizes)
+
+	return &sizes
+}
 
 
 func CacheAllScrapers() {
-	WriteToFile("http://z-ecx.images-amazon.com/images/G/02/apparel/size-charts/mens._V367500858_.html","./amazonSizes.json", ParseAmazonSizes)
-	WriteToFile("https://www.nike.com/size-fit/mens-tops-alpha","./nikeSizes.json", ParseNikeSizes)
+	WriteToFile("http://z-ecx.images-amazon.com/images/G/02/apparel/size-charts/mens._V367500858_.html","./amazonMensSizes.json", ParseAmazonSizes)
+	WriteToFile("http://z-ecx.images-amazon.com/images/G/02/apparel/size-charts/mens._V367500858_.html","./amazonWomensSizes.json", ParseAmazonSizes)
+	WriteToFile("https://www.nike.com/size-fit/mens-tops-alpha","./nikeMensSizes.json", ParseNikeSizes)
+	WriteToFile("https://www.nike.com/size-fit/womens-tops-alpha","./nikeWomensSizes.json", ParseNikeSizes)
+	WriteToFile("https://www2.hm.com/en_us/customer-service/sizeguide/ladies.html","./hmWomensSizes.json", ParseHMSizes)
+	WriteToFile("https://www2.hm.com/en_us/customer-service/sizeguide/ladies.html","./hmMensSizes.json", ParseHMSizes)
+	WriteToFile("http://www.sizecharter.com/brands/zar/womens", "./zaraWomensSizes.json", ParseZaraSizes)
+	WriteToFile("http://www.sizecharter.com/brands/zar/mens", "./zaraMensSizes.json", ParseZaraSizes)
 }
 
 func WriteToFile(website, fileDest string, parseFunc func(string) interface{}){
