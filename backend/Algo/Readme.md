@@ -1,4 +1,4 @@
-#Algo Notes
+# Algo Notes
 Currently the program parses a json and takes note of all of the sizing options available.
 ### Current Arguments
 - num of args
@@ -14,7 +14,7 @@ Sample arguments for execution:
 3 "Nike" "Shirts" "C:\Users\Ashwi\OneDrive\Documents\GitHub\CS4345-Proj\backend\webscraper\src\nikeSizes.json"
 ````
 
-####In the works
+#### In the works
 4th argument will be the dimensions of a user for a given article of clothing.
 We will then have the program return the size that most closely correlates to provided dimensions.
 Further arguments may be necessary to determine customer sizing preference (to adjust algo weighting) and other influences.
