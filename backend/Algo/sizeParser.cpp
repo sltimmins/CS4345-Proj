@@ -6,7 +6,7 @@ void parseJsonSizes(std::vector<size>& sizeVect, std::string domain, std::string
         parseJsonSizesNike(sizeVect, article, file);
     }
     else if(domain == "Amazon"){
-
+        parseJsonSizesAmazon(sizeVect, article, file);
     }
     else{
         std::cout << std::endl << "Domain not recognized." << std::endl;
@@ -18,7 +18,7 @@ void parseJsonSizesNike(std::vector<size>& sizeVect, std::string article, std::s
     std::ifstream jsonFile(file);
     json jf = json::parse(jsonFile);
 
-    std::cout << jf.at(article) << std::endl;
+//    std::cout << jf.at(article) << std::endl;
 
     std::string chestString;
     std::string heightString;
@@ -28,28 +28,59 @@ void parseJsonSizesNike(std::vector<size>& sizeVect, std::string article, std::s
 
     for (auto it = jf.at(article).begin(); it != jf.at(article).end(); ++it)
     {
-        std::cout << it.key() << "\n";
+//        std::cout << it.key() << "\n";
         std::map<std::string, double> initialMap;
 
-        std::cout << "Chest: " << (*it).at("Chest (cm)") << "\n";
+//        std::cout << "Chest: " << (*it).at("Chest (cm)") << "\n";
         chestString = (*it)["Chest (cm)"].dump(1);
         initialMap.insert(std::pair<std::string,double>("Chest",getNumberFromString(chestString)));
 
-        std::cout << "Height: " << (*it).at("Height (cm) ") << "\n";
+//        std::cout << "Height: " << (*it).at("Height (cm) ") << "\n";
         heightString = (*it)["Height (cm) "].dump(1);
         initialMap.insert(std::pair<std::string,double>("Height",getNumberFromString(heightString)));
 
-        std::cout << "Hip: " << (*it).at("Hip (cm)") << "\n";
+//        std::cout << "Hip: " << (*it).at("Hip (cm)") << "\n";
         hipString = (*it)["Hip (cm)"].dump(1);
         initialMap.insert(std::pair<std::string,double>("Hip",getNumberFromString(hipString)));
 
-        std::cout << "Waist: " << (*it).at("Waist (cm)") << "\n";
+//        std::cout << "Waist: " << (*it).at("Waist (cm)") << "\n";
         waistString = (*it)["Waist (cm)"].dump(1);
         initialMap.insert(std::pair<std::string,double>("Waist",getNumberFromString(waistString)));
 
-        std::cout << getNumberFromString(chestString) << ", " << getNumberFromString(heightString) << ", " << getNumberFromString(hipString) << ", " << getNumberFromString(waistString) << std::endl;
+//        std::cout << getNumberFromString(chestString) << ", " << getNumberFromString(heightString) << ", " << getNumberFromString(hipString) << ", " << getNumberFromString(waistString) << std::endl;
 
-        std::cout << std::endl;
+//        std::cout << std::endl;
+
+        size currSize(it.key(), initialMap);
+        sizeVect.push_back(currSize);
+
+    }
+
+    jsonFile.close();
+}
+
+void parseJsonSizesAmazon(std::vector<size>& sizeVect, std::string article, std::string file){
+    std::cout << file <<std::endl;
+    std::ifstream jsonFile(file);
+    json jf = json::parse(jsonFile);
+
+    std::string chestString;
+    std::string sleeveLengthString;
+    std::string neckString;
+
+
+    for (auto it = jf.at(article).begin(); it != jf.at(article).end(); ++it)
+    {
+        std::map<std::string, double> initialMap;
+
+        chestString = (*it)["Chest"].dump(1);
+        initialMap.insert(std::pair<std::string,double>("Chest",getNumberFromString(chestString)));
+
+        sleeveLengthString = (*it)["Sleeve Length"].dump(1);
+        initialMap.insert(std::pair<std::string,double>("Sleeve Length",getNumberFromString(sleeveLengthString)));
+
+        neckString = (*it)["Neck"].dump(1);
+        initialMap.insert(std::pair<std::string,double>("Neck",getNumberFromString(neckString)));
 
         size currSize(it.key(), initialMap);
         sizeVect.push_back(currSize);
@@ -60,8 +91,8 @@ void parseJsonSizesNike(std::vector<size>& sizeVect, std::string article, std::s
 }
 
 double getNumberFromString(std::string s) {
-    std::vector<int> numbers;
-    int num = 0;
+    std::vector<double> numbers;
+    double num = 0;
 
     for (int i = 0; i < (int)s.length(); i++) {
         if (isdigit(s[i])) {

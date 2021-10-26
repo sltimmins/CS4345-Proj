@@ -10,7 +10,7 @@ int main(int argc, char const* argv[]) {
     parseJsonSizes(sizeVect, argv[2], argv[3], argv[4]);
 
     /// Parsing through size map
-    std::cout << std::endl << "Number of sizes found on " << argv[2] << " for " << argv[3] << ": " << sizeVect.size() << std::endl;
+    std::cout << std::endl << "Number of sizes found on " << argv[2] << " for " << argv[3] << ": " << sizeVect.size() << std::endl << std::endl;
     for(int i = 0; i < sizeVect.size(); i++){
         std::cout << sizeVect[i].get_clothingArticle() << std::endl;
         for (auto const& x : sizeVect[i].get_sizePair())
@@ -18,8 +18,9 @@ int main(int argc, char const* argv[]) {
             std::cout << x.first  // string (key)
                       << ':'
                       << x.second // string's value
-                      << std::endl;
+                      << "  ";
         }
+        std::cout << std::endl << std::endl;
     }
     ///
 

@@ -18,6 +18,7 @@ using json = nlohmann::json;
 void parseJsonSizes(std::vector<size>& sizeVect, std::string domain, std::string article, std::string file);
 
 void parseJsonSizesNike(std::vector<size>& sizeVect, std::string article, std::string file);
+void parseJsonSizesAmazon(std::vector<size>& sizeVect, std::string article, std::string file);
 
 double getNumberFromString(std::string s);
 
