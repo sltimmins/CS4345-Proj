@@ -4,7 +4,7 @@ export class NewUser extends React.Component {
 
     state = {
         userName: "",
-        
+        typeOfInput:""
     }
 
     submitButton(){
@@ -26,9 +26,35 @@ export class NewUser extends React.Component {
                 >
                 </input>
 
-            <button type="button"
-                onClick={ () => this.submitButton() }>Let's get started!</button>
+            
+            {
+                this.state.typeOfInput==="" && <div>
+                    <button type="button"
+                            onClick={ () => this.setState({ typeOfInput: "Measurements" }) }>I know my measurements</button>
+    
+                    <button type="button"
+                            onClick={ () => this.setState({ typeOfInput: "RefSize" }) }>I'll select a reference size</button>
+
+                </div>
+
+            }
+
+            {
+                this.state.typeOfInput==="Measurements" && <div>
+                    <h2>Please enter your measurements:</h2>
+                </div>
+            }
+            {
+                this.state.typeOfInput==="RefSize" && <div>
+                    <h2>Please select a clothing brand:</h2>
+                    <select></select>
+                </div>
+            }
+
         </form>
+
+        <button type="button"
+            onClick={ () => this.submitButton() }>Let's get started!</button>
 
     </>}
 }
