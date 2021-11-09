@@ -4,11 +4,13 @@ import { NewUser } from './NewUser';
 export class LandingPage extends React.Component {
 
     state = {
-        hasAccount: JSON.parse(window.localStorage.getItem('hasAccount')) || "false"
+        hasAccount: JSON.parse(window.localStorage.getItem('hasAccount')) || "false",
+        userName: JSON.parse(window.localStorage.getItem('userName')) || "",
     }
 
-    getStarted(input){
-        window.localStorage.setItem('hasAccount', JSON.stringify(input));
+    saveNewPrefs(prefs){
+        window.localStorage.setItem('hasAccount', JSON.stringify("true"));
+        window.localStorage.setItem('userName', JSON.stringify(prefs.userName));
     }
 
     render(){return<>
@@ -19,14 +21,12 @@ export class LandingPage extends React.Component {
 
         {this.state.hasAccount === "false" && <div>
 
-            <NewUser/>
-            
-            <button onClick={ () => this.getStarted("true")}>Get Started!</button>
+            <NewUser saveUserPrefs={prefs => this.saveNewPrefs(prefs)}/>
 
         </div>}
 
         {
-            this.state.hasAccount === "true" && <h1>Previous</h1>
+            this.state.hasAccount === "true" && <h1> Welcome back {this.state.userName}!</h1>
         }
 
     </>}
