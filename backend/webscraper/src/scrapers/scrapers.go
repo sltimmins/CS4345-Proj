@@ -421,6 +421,122 @@ func ParseZaraSizes(url string) interface{}{
 	return &sizes
 }
 
+// Parses the tables from Amazon
+func ParseAsosSizes(url string) interface{}{
+	//Create a new collector which will be in charge of collect the data from HTML
+	c := colly.NewCollector(
+		colly.UserAgent("Mozilla/5.0"),
+	)
+
+	// all the articles of clothes that we support for this store
+	articlesOfClothing := map[string][]string {
+		"tshirts-tops" : []string{"women", "T-Shirts and Tops"},
+		"shirts" : []string{"men", "Shirts"},
+		"tshirts-polo-shirts" : []string{"men", "T-Shirts and Polo Shirts"},
+		"jackets-coats" : []string{"men", "Jackets and Coats"},
+		"coats-jackets" : []string{"women", "Coats and Jackets"},
+
+	}
+
+	//Slices to store the data
+	sizes :=  map[string]map[string]map[string][]string{}
+	//onHTML function allows the collector to use a callback function when the specific HTML tag is reached
+	//in this case whenever our collector finds an
+	//anchor tag with href it will call the anonymous function
+	// specified below which will get the info from the href and append it to our slice
+
+	gender := "men"
+	if(strings.Contains(url, "/women/")) {
+		gender = "women"
+	}
+	for key, val := range articlesOfClothing {
+		if val[0] == gender {
+			itemTypes := []string{}
+			url2 := url + key + "/"
+			fmt.Println(url2)
+			itemNames := []string{}
+
+			c.OnHTML("table", func(elem *colly.HTMLElement) {
+				if elem.Index == 0 {
+					// get all  of the clothing types
+					elem.ForEach("table:first-child thead tr", func(eIndex int, e *colly.HTMLElement) {
+						fmt.Println("ture")
+						e.ForEach("th", func(i int, f *colly.HTMLElement) {
+							if eIndex == 0 {
+								if i > 0 {
+									itemNames = append(itemNames, strings.ReplaceAll(strings.ReplaceAll(strings.ReplaceAll(strings.TrimSpace(f.Text), "\t", ""), "\n", " "), "To fit ", ""))
+								}
+							} else {
+								if i > 0 {
+									if (i % 2) != 0 {
+										itemTypes = append(itemTypes, itemNames[i/2] + " " + strings.ReplaceAll(strings.TrimSpace(f.Text), "\t", ""))
+									} else {
+										itemTypes = append(itemTypes, itemNames[(i/2)-1] + " " + strings.ReplaceAll(strings.TrimSpace(f.Text), "\t", ""))
+									}
+								}
+							}
+						})
+						fmt.Println(itemTypes)
+
+					})
+				}
+			})
+
+			c.OnHTML("table", func(elem *colly.HTMLElement) {
+				if elem.Index == 0 {
+					elem.ForEach("tbody tr", func(eIndex int, e *colly.HTMLElement) {
+						fmt.Println("ture")
+						currentSize := ""
+						e.ForEach("td", func(i int, f *colly.HTMLElement) {
+							if i > 0 {
+								if i >= len(itemTypes) {
+									return
+								}
+								fmt.Println(itemTypes, (i/2))
+
+								bodyPart := ""
+								if (i % 2) != 0 {
+									bodyPart = itemTypes[i-1]
+								} else {
+									bodyPart = itemTypes[i-1]
+								}
+								clothingElement := val[1]
+								// check if clothing element has been initialized in size map
+								if sizes[clothingElement] == nil {
+									sizes[clothingElement] = map[string]map[string][]string{}
+								}
+								// check if size classification has been initialized for clothing element map
+								if sizes[clothingElement][currentSize] == nil {
+									sizes[clothingElement][currentSize] = map[string][]string{}
+								}
+								// check if bodyPart has been initialized for size classification map
+								if sizes[clothingElement][currentSize][bodyPart] == nil {
+									sizes[clothingElement][currentSize][bodyPart] = []string{}
+								}
+								if len(sizes[clothingElement][currentSize][bodyPart]) > 0 {
+									if !ArrContainsStr(sizes[clothingElement][currentSize][bodyPart], strings.TrimSpace(f.Text)) {
+										// once everything required to be initialized in the sizes map, is now able to be added to
+										sizes[clothingElement][currentSize][bodyPart] = append(sizes[clothingElement][currentSize][bodyPart], strings.TrimSpace(f.Text))
+									}
+								} else {
+									// once everything required to be initialized in the sizes map, is now able to be added to
+									sizes[clothingElement][currentSize][bodyPart] = append(sizes[clothingElement][currentSize][bodyPart], strings.TrimSpace(f.Text))
+								}
+
+							} else {
+								currentSize = strings.TrimSpace(f.Text)
+							}
+						})
+					})
+				}
+			})
+			//Command to visit the website
+			c.Visit(url2)
+		}
+	}
+	return &sizes
+}
+
 
 func CacheAllScrapers() {
 	WriteToFile("http://z-ecx.images-amazon.com/images/G/02/apparel/size-charts/mens._V367500858_.html","./amazonMensSizes.json", ParseAmazonSizes)
@@ -431,6 +547,8 @@ func CacheAllScrapers() {
 	WriteToFile("https://www2.hm.com/en_us/customer-service/sizeguide/men.html","./hmMensSizes.json", ParseHMSizes)
 	WriteToFile("http://www.sizecharter.com/brands/zar/womens", "./zaraWomensSizes.json", ParseZaraSizes)
 	WriteToFile("http://www.sizecharter.com/brands/zar/mens", "./zaraMensSizes.json", ParseZaraSizes)
+	WriteToFile("https://www.asos.com/us/discover/size-charts/women/", "./asosWomensSizes.json", ParseAsosSizes)
+	WriteToFile("https://www.asos.com/us/discover/size-charts/men/", "./asosMensSizes.json", ParseAsosSizes)
 }
 
 func WriteToFile(website, fileDest string, parseFunc func(string) interface{}){
