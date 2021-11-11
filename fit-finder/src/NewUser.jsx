@@ -6,6 +6,7 @@ export class NewUser extends React.Component {
         " ",
         "Amazon",
         "H&M",
+        "Nike",
         "Another brand"
     ]
 
