@@ -1,6 +1,7 @@
 import React from 'react';
 import { NewUser } from './NewUser';
-
+import './LandingPage.css'
+import LogoutIcon from '@mui/icons-material/Logout';
 export class LandingPage extends React.Component {
 
     state = {
@@ -25,30 +26,34 @@ export class LandingPage extends React.Component {
         window.localStorage.setItem('referenceSizeBottom', JSON.stringify(prefs.referenceSizeBottom));
     }
 
-    render(){return<>
-
-        <button onClick={ () => window.localStorage.clear()}>CLEAR LOCAL STORAGE</button> <br/>
-
-        <img className="img-fluid float-center " src="ff_logo.png"></img>
+    render(){return<main>
+        <section className={"logoutSection"}>
+            <button type={"button"} className={"logOutButton"} style={{display: this.state.hasAccount && this.state.hasAccount !== "false"  ? 'block': 'none'}}
+                onClick={ () => {window.localStorage.clear(); this.setState({garbage: "garbage"}); window.location.href = "/"}}
+            >
+                <LogoutIcon fontSize={"large"}/>
+            </button>
+        </section>
+        <img className="img-fluid float-center customImage " src="ff_logo.png"></img>
 
         {this.state.hasAccount === "false" && <div>
 
-            <h1>Welcome to FitFinder!</h1>
+            <h1 className={"title"}>Welcome to FitFinder!</h1>
             <NewUser saveNewPrefs={prefs => this.saveNewPrefs(prefs)}/>
 
         </div>}
 
         {
             this.state.hasAccount === "true" && <div>
-                <h1> Welcome back {this.state.userName}!</h1>
+                <h1 className={"welcomeBack"}> Welcome back <span className={"welcomeBackName"}>{this.state.userName}</span>!</h1>
 
-                <span> Your chest size is {this.state.chestSize}{this.state.measurementDimensions} </span><br/>
-                <span> Your arm length size is {this.state.armLength}{this.state.measurementDimensions} </span><br/>
-                <span> Your reference brand is {this.state.referenceBrand} </span><br/>
-                <span> You prefer a size {this.state.referenceSizeTop} for tops and size {this.state.referenceSizeBottom} for bottoms </span><br/>
+                <span className={"generalInfo"}> Your chest size is <span className={"dynamicData"}>{this.state.chestSize}{this.state.measurementDimensions}</span> </span><br/>
+                <span className={"generalInfo"}> Your arm length size is <span className={"dynamicData"}>{this.state.armLength}{this.state.measurementDimensions}</span> </span><br/>
+                <span className={"generalInfo"}> Your reference brand is <span className={"dynamicData"}>{this.state.referenceBrand}</span> </span><br/>
+                <span className={"generalInfo"}> You prefer a size <span className={"dynamicData"}>{this.state.referenceSizeTop}</span> for tops and size <span className={"dynamicData"}>{this.state.referenceSizeBottom}</span> for bottoms </span><br/>
 
                 </div>
         }
 
-    </>}
+    </main>}
 }
