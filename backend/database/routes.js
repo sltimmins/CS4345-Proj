@@ -145,4 +145,21 @@ module.exports = function routes(app, logger) {
             }
         });
     });
+
+    app.get("/info", (req, res) => {
+        const id = req.query.id;
+
+        const sql = "SELECT chest, height, hip, sleeveLength, neck, gender FROM fitfindr.users WHERE id = ?";
+        pool.query(sql, [id], (err, results) => {
+            if (err) {
+                logger.error("Error retrieving sizing: \n", err);
+                res.status(400).send({
+                  success: false,
+                  msg: "Error retrieving sizing",
+                });
+            } else {
+                res.status(200).send({ success: true, data: results });
+            }
+        })
+    })
 }
