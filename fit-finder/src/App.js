@@ -11,10 +11,7 @@ import { Login } from './Login';
 function App() {
   return (
 
-    <Router>
-      <Route component = {Login} path="/login" exact/>
-      <Route component = {LandingPage} path="/" exact/>
-    </Router>
+    <LandingPage/>
     
   );
 }

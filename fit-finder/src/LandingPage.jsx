@@ -1,8 +1,6 @@
 import React from 'react';
-import { NavLink } from 'react-router-dom';
 import { NewUser } from './NewUser';
-
-import { Link } from 'react-router-dom';
+import { Login } from './Login';
 
 export class LandingPage extends React.Component {
 
@@ -34,12 +32,15 @@ export class LandingPage extends React.Component {
 
         <img className="img-fluid float-center " src="ff_logo.png"></img>
 
-        {this.state.hasAccount === "false" && <div>
+        {
+            this.state.hasAccount === "false" && <div>
 
-            <h1>Welcome to FitFinder!</h1>
-            <NewUser saveNewPrefs={prefs => this.saveNewPrefs(prefs)}/>
+                <h1>Welcome to FitFinder!</h1>
+                <Login />
+                <NewUser saveNewPrefs={prefs => this.saveNewPrefs(prefs)}/>
 
-        </div>}
+            </div>
+        }
 
         {
             this.state.hasAccount === "true" && <div>
@@ -52,8 +53,6 @@ export class LandingPage extends React.Component {
 
                 </div>
         }
-
-        <Link to="/login" className="btn btn-danger">Login Button Test</Link>
 
     </>}
 }
