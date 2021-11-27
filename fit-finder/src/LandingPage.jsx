@@ -1,5 +1,8 @@
 import React from 'react';
+import { NavLink } from 'react-router-dom';
 import { NewUser } from './NewUser';
+
+import { Link } from 'react-router-dom';
 
 export class LandingPage extends React.Component {
 
@@ -49,6 +52,8 @@ export class LandingPage extends React.Component {
 
                 </div>
         }
+
+        <Link to="/login" className="btn btn-danger">Login Button Test</Link>
 
     </>}
 }
