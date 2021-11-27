@@ -1,7 +1,10 @@
 import React from 'react';
 import { useState } from 'react';
+import { UserRepository } from './api/UserRepository';
 
 export const Login = props => {
+    
+    const userRepo = new UserRepository();
 
     const [username, setUsername] = useState('');
     const [password, setPassword] = useState('');
@@ -34,8 +37,9 @@ export const Login = props => {
                 <br />
 
                 <button
-                    type="submit"
-                    className="btn btn-primary">Log in</button>
+                    type="button"
+                    className="btn btn-primary"
+                    onClick={() => userRepo.login()}>Log in</button>
             </form>
         </div>
         </div>
