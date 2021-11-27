@@ -36,7 +36,6 @@ export class LandingPage extends React.Component {
             this.state.hasAccount === "false" && <div>
 
                 <h1>Welcome to FitFinder!</h1>
-                <Login />
                 <NewUser saveNewPrefs={prefs => this.saveNewPrefs(prefs)}/>
 
             </div>
