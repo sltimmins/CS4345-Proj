@@ -49,8 +49,6 @@ export class NewUser extends React.Component {
 
     render(){return<>
 
-        <h2 className={"subHeader instructions"}>Let's set up your clothing preferences!</h2>
-
         <form>
             <label for="userName" className={"nameLabel"}>Enter your name: </label>
             <input 
