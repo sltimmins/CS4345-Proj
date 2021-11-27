@@ -47,7 +47,7 @@ export class LandingPage extends React.Component {
             <h2 className={"subHeader instructions"}>Let's set up your clothing preferences!</h2>
 
             <button className="btn btn-outline-secondary mb-3"
-                    onClick={() => this.setState({login: !this.login})}> or login here!</button>
+                    onClick={() => this.setState(prevState => ({login: !prevState.login}))}> or login here!</button>
             
             {
                 this.state.login === true && <Login />
