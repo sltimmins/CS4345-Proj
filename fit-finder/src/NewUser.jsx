@@ -1,4 +1,5 @@
 import React from 'react';
+import './NewUser.css'
 
 export class NewUser extends React.Component {
 
@@ -48,10 +49,10 @@ export class NewUser extends React.Component {
 
     render(){return<>
 
-        <h2>Let's set up your clothing preferences!</h2>
+        <h2 className={"subHeader instructions"}>Let's set up your clothing preferences!</h2>
 
         <form>
-            <label for="userName">Enter your name: </label>
+            <label for="userName" className={"nameLabel"}>Enter your name: </label>
             <input 
                 type="text" id="userName" name="userName"
                 value={this.state.userName}
@@ -64,14 +65,14 @@ export class NewUser extends React.Component {
 
             
             {
-                this.state.typeOfInput==="" && <div className="row">
-                    <button className="btn btn-block btn-outline-primary col mx-3"
+                this.state.typeOfInput==="" && <div className="">
+                    <button className="btn btn-block btn-primary col mx-3 customButton"
                             type="button"
-                            onClick={ () => this.setState({ typeOfInput: "Measurements" }) }>I know my measurements</button>
+                            onClick={ () => {if(this.state.userName)this.setState({ typeOfInput: "Measurements" }) }}>I know my measurements</button>
     
                     <button className="btn btn-block btn-outline-primary col mx-3"
                             type="button"
-                            onClick={ () => this.setState({ typeOfInput: "RefSize" }) }>I'll select a reference size</button>
+                            onClick={ () => {if(this.state.userName)this.setState({ typeOfInput: "RefSize" }) }}>I'll select a reference size</button>
 
                 </div>
 
@@ -81,9 +82,9 @@ export class NewUser extends React.Component {
                 this.state.typeOfInput==="Measurements" && <div>
 
                     <form>
-                        <h2 className="">Please enter your measurements below!</h2>
+                        <h2 className={"directions instructions"}>Please enter your measurements below!</h2>
 
-                        <label for="measurementDimensions">These measurements are in </label>
+                        <label for="measurementDimensions" className={"nameLabel"}>These measurements are in </label>
                         <select className="ml-3" name="measurementDimensions" id="measurementDimensions"
                                 onChange={event => this.setState({measurementDimensions: event.target.value})}>
                             <option value=""> </option>
@@ -92,36 +93,38 @@ export class NewUser extends React.Component {
                         </select>
 
                         <br/>
+                        <section className={"centeringDiv"}>
+                            <div className="card mt-3 specialCard">
 
-                        <div className="card mt-3">
+                                <h3 className="card-header mb-3 cardTitle">Shirts and Jackets</h3>
+                                <div className="row pr-5">
+                                    <label htmlFor="chestSize"
+                                           className="col-5">Chest</label>
+                                    <input
+                                        type="text" id="chestSize" name="chestSize"
+                                        value={this.state.chestSize}
+                                        onChange={event => this.setState({chestSize: event.target.value})}
+                                        className="mb-1 col-5 align-left"
+                                    >
+                                    </input>
+                                </div>
 
-                            <h3 className="card-header mb-3">Shirts and Jackets</h3>
-                            <div className="row pr-5">
-                                <label for="chestSize"
-                                        className="col-5">Chest</label>
-                                <input 
-                                    type="text" id="chestSize" name="chestSize"
-                                    value={this.state.chestSize}
-                                    onChange={event => this.setState({chestSize: event.target.value})}
-                                    className="mb-1 col-5 align-left"
-                                >
-                                </input>
+                                <br/>
+
+                                <div className="row">
+                                    <label htmlFor="chestSize"
+                                           className="col-5">Arm Length</label>
+                                    <input
+                                        type="text" id="armLength" name="armLength"
+                                        value={this.state.armLength}
+                                        onChange={event => this.setState({armLength: event.target.value})}
+                                        className="mb-1 col-5"
+                                    >
+                                    </input>
+                                </div>
                             </div>
-
-                            <br/>
-
-                            <div className="row">
-                                <label for="chestSize"
-                                        className="col-5">Arm Length</label>
-                                <input 
-                                    type="text" id="armLength" name="armLength"
-                                    value={this.state.armLength}
-                                    onChange={event => this.setState({armLength: event.target.value})}
-                                    className="mb-1 col-5"
-                                >
-                                </input>
-                            </div>
-                        </div>
+                        </section>
+                        
                     </form>
 
                 </div>
@@ -177,10 +180,13 @@ export class NewUser extends React.Component {
                     </div>
                 </div>
             }
-
-            <button onClick={ () => this.submitButton() }
-                className="btn btn-primary mt-3"
+            {
+                (this.state.chestSize && this.state.armLength && this.state.measurementDimensions && this.state.userName) || (this.state.referenceSizeTop && this.state.referenceSizeBottom && this.state.referenceBrand) ?
+                <button onClick={() => this.submitButton()}
+                        className="btn btn-primary mt-3 padBottomButton"
                 >Let's get started!</button>
+                    : []
+            }
 
         </form>
 

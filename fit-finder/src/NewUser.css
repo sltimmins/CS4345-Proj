@@ -1,0 +1,55 @@
+@import url('https://fonts.googleapis.com/css2?family=Open+Sans:wght@300&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Open+Sans:wght@400&display=swap');
+
+.subHeader {
+    font-family: Open Sans, sans-serif;
+    font-size: 1.2rem;
+}
+
+.nameLabel {
+    margin-right: .5rem;
+}
+
+.customButton {
+    margin-bottom: 1rem;
+    margin-top: 1rem;
+}
+
+.centeringDiv {
+    display: inline-flex;
+    width: 100%;
+    align-items: center;
+    justify-content: center;
+}
+
+.specialCard {
+    width: 90%;
+    margin-bottom: 1rem;
+}
+
+.specialCard .row:last-child {
+    margin-bottom: .5rem;
+}
+
+.cardTitle {
+    font-size: 1.2rem;
+}
+
+h2 {
+    font-family: Open Sans, sans-serif !important;
+    font-weight: 400;
+    font-size: 1.4rem;
+    max-width: 90%;
+}
+
+.instructions {
+    padding: .5rem
+}
+
+.directions {
+    font-size: 1.5rem;
+}
+
+.padBottomButton {
+    margin-bottom: 1rem;
+}

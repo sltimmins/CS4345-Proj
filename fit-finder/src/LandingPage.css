@@ -1,0 +1,45 @@
+@import url('https://fonts.googleapis.com/css2?family=Open+Sans:wght@300&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Poppins&display=swap');
+
+.title {
+    font-family: Open Sans, sans-serif;
+}
+
+.logOutButton {
+    border: 0;
+    background-color: transparent;
+}
+
+.logoutSection {
+    width: 100%;
+    display: inline-flex;
+    flex-direction: column;
+    align-items: flex-end;
+}
+
+main {
+    border-radius: 10px;
+}
+
+.customImage {
+    width: 80%;
+}
+
+.dynamicData {
+    font-weight: 700;
+}
+
+.generalInfo {
+    font-family: Poppins, sans-serif;
+    max-width: 95%;
+}
+
+.welcomeBack {
+    font-size: 1.8rem;
+    font-family: Poppins, sans-serif;
+    font-weight: 300;
+}
+
+.welcomeBackName {
+    font-weight: 700;
+}
