@@ -64,8 +64,10 @@ export class NewUser extends React.Component {
             referenceSizeTop: this.state.referenceSizeTop,
             referenceSizeBottom: this.state.referenceSizeBottom
         });
-
-        this.userRepo.register(this.state);
+        this.userRepo.register(this.state.userName, this.state.password,
+                                this.state.chestSize, this.state.height,
+                                this.state.hipSize, this.state.gender,
+                                this.state.sleeveLength, this.state.neckSize);
     }
 
     render(){return<>
