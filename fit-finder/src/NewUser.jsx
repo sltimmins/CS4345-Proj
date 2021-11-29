@@ -3,6 +3,19 @@ import './NewUser.css'
 
 export class NewUser extends React.Component {
 
+    constructor() {
+        super();
+        this.state = {
+            userName: "",
+            typeOfInput:"",
+            measurementDimensions:"",
+            chestSize:"",
+            armLength:"",
+            referenceBrand:"",
+            referenceSizeTop:"",
+            referenceSizeBottom:"",
+        }
+    }
     referenceBrands = [
         " ",
         "Amazon",
@@ -21,36 +34,33 @@ export class NewUser extends React.Component {
         "XXL"
     ]
 
-    state = {
-        userName: "",
-        typeOfInput:"",
-
-        measurementDimensions:"",
-        chestSize:"",
-        armLength:"",
-
-        referenceBrand:"",
-        referenceSizeTop:"",
-        referenceSizeBottom:"",
-        
-    }
-
     submitButton(){
+        const {
+            userName,
+            measurementDimensions,
+            chestSize,
+            armLength,
+            referenceBrand,
+            referenceSizeTop,
+            referenceSizeBottom,
+            password,
+        } = this.state;
         this.props.saveNewPrefs({
-            userName: this.state.userName,
-            measurementDimensions: this.state.measurementDimensions,
-            chestSize: this.state.chestSize,
-            armLength: this.state.armLength,
-            referenceBrand: this.state.referenceBrand,
-            referenceSizeTop: this.state.referenceSizeTop,
-            referenceSizeBottom: this.state.referenceSizeBottom
+            userName,
+            measurementDimensions,
+            chestSize,
+            armLength,
+            referenceBrand,
+            referenceSizeTop,
+            referenceSizeBottom,
+            password,
         });
     }
 
     render(){return<>
-
-        <h2 className={"subHeader instructions"}>Let's set up your clothing preferences!</h2>
-
+        <section className={"centeringDiv"}>
+            <h2 className={"subHeader instructions"}>Let's set up your clothing preferences!</h2>
+        </section>
         <form>
             <label for="userName" className={"nameLabel"}>Enter your name: </label>
             <input 
@@ -82,7 +92,9 @@ export class NewUser extends React.Component {
                 this.state.typeOfInput==="Measurements" && <div>
 
                     <form>
-                        <h2 className={"directions instructions"}>Please enter your measurements below!</h2>
+                        <section className={"centeringDiv"}>
+                            <h2 className={"directions instructions"}>Please enter your measurements below!</h2>
+                        </section>
 
                         <label for="measurementDimensions" className={"nameLabel"}>These measurements are in </label>
                         <select className="ml-3" name="measurementDimensions" id="measurementDimensions"
