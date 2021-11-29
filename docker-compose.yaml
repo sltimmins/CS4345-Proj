@@ -14,7 +14,7 @@ services:
       - "8000:8000"
     command: go run app/main.go
   db:
-    image: gcr.io/$CLOUD_RUN_PROJECT_ID/$REPO_NAME:$GITHUB_SHA
+    image: gcr.io/$CLOUD_RUN_PROJECT_ID/$REPO_NAME:$GITHUB_SHA/database
     build: ./backend/database
     # working directory in container to place files
     working_dir: /app
