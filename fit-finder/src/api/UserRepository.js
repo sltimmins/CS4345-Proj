@@ -1,6 +1,6 @@
 import { checkboxClasses } from '@mui/material';
 import axios from 'axios';
-const url = "http://fitfindr.c4vta9gggsb7.us-east-2.rds.amazonaws.com"
+const url = "http://ec2-18-217-252-234.us-east-2.compute.amazonaws.com:5000/"
 
 export class UserRepository {
 
