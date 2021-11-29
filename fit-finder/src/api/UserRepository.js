@@ -6,9 +6,9 @@ export class UserRepository {
 
     register(username, password, chest, height, hip, gender, sleeveLength, neck){
         return new Promise((resolve, reject) => {
-          axios.post(`${url}/users/dimensions`, 
+          axios.post(`${url}/users/dimensions`,
           {username: username, password: password,
-            chest: chest, height: height, hip: hip, 
+            chest: chest, height: height, hip: hip,
             gender: gender, sleeveLength: sleeveLength, neck: neck})
                 .then(x => resolve(x.data))
                 .catch(x => {
