@@ -22,5 +22,7 @@ void parseJsonSizesAmazon(std::vector<size>& sizeVect, std::string article, std:
 
 double getNumberFromString(std::string s);
 
+std::string getBestFit(std::vector<size> sizeVect);
+
 
 #endif //CS4345_PROJ_SIZEPARSER_H

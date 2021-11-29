@@ -8,7 +8,7 @@ Currently the program parses a json and takes note of all of the sizing options 
 
 Sample arguments for execution:
 ````
-3 "Amazon" "Shirts" "C:\Users\Ashwi\OneDrive\Documents\GitHub\CS4345-Proj\backend\webscraper\src\amazonSizes.json"
+3 "Amazon" "Jackets" "C:\Users\Ashwi\OneDrive\Documents\GitHub\CS4345-Proj\backend\webscraper\src\amazonSizes.json"
 ````
 ````
 3 "Nike" "Shirts" "C:\Users\Ashwi\OneDrive\Documents\GitHub\CS4345-Proj\backend\webscraper\src\nikeSizes.json"

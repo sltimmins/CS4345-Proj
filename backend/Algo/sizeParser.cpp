@@ -104,9 +104,45 @@ void parseJsonSizesAmazon(std::vector<size>& sizeVect, std::string article, std:
             size currSize(it.key(), initialMap);
             sizeVect.push_back(currSize);
         }
+        jsonFile.close();
+    }
+    else if(article == "Trousers \\u0026 Jeans - Inseam"){
+        std::ifstream jsonFile(file);
+        json jf = json::parse(jsonFile);
+
+        std::string inseamLengthString;
+
+        for (auto it = jf.at(article).begin(); it != jf.at(article).end(); ++it) {
+            std::map<std::string, double> initialMap;
+
+            inseamLengthString = (*it)["Inseam Length"].dump(1);
+            initialMap.insert(std::pair<std::string, double>("Inseam Length", getNumberFromString(inseamLengthString)));
+
+            size currSize(it.key(), initialMap);
+            sizeVect.push_back(currSize);
+        }
+        jsonFile.close();
+    }
+    else if(article == "Trousers \\u0026 Jeans - Waist"){
+        std::ifstream jsonFile(file);
+        json jf = json::parse(jsonFile);
+
+        std::string waistString;
+
+        for (auto it = jf.at(article).begin(); it != jf.at(article).end(); ++it) {
+            std::map<std::string, double> initialMap;
+
+            waistString = (*it)["Waist"].dump(1);
+            initialMap.insert(std::pair<std::string, double>("Waist", getNumberFromString(waistString)));
+
+            size currSize(it.key(), initialMap);
+            sizeVect.push_back(currSize);
+        }
+        jsonFile.close();
     }
     else{
         std::cout << "Clothing article for given domain not yet supported." << std::endl;
+        std::cout << article << std::endl;
     }
 }
 
@@ -138,4 +174,18 @@ double getNumberFromString(std::string s) {
     }
     double avg = sum / numbers.size();
     return avg;
+}
+
+std::string getBestFit(std::vector<size> sizeVect){
+    for(int i = 0; i < sizeVect.size(); i++){
+        std::cout << sizeVect[i].get_clothingArticle() << std::endl;
+        for (auto const& x : sizeVect[i].get_sizePair())
+        {
+            std::cout << x.first  // string (key)
+                      << ':'
+                      << x.second // string's value
+                      << "  ";
+        }
+        std::cout << std::endl << std::endl;
+    }
 }
