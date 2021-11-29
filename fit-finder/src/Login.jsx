@@ -1,6 +1,7 @@
 import React from 'react';
 import { useState } from 'react';
 import { UserRepository } from './api/UserRepository';
+import { LandingPage } from './LandingPage';
 
 export const Login = props => {
     
@@ -8,9 +9,18 @@ export const Login = props => {
 
     const [username, setUsername] = useState('');
     const [password, setPassword] = useState('');
+    const [loggedIn, setLoggedIn] = useState(false)
+
+    const login = () => {
+        userRepo.login(username, password).then(x => {
+            if(x.success) {
+                setLoggedIn(true);
+            }
+        })
+
+    }
 
     return<>
-
         <div className="card">
         <h1 className="card-header w-100 text-center mx-auto">Login</h1>
         <div className="card-body">
@@ -39,10 +49,9 @@ export const Login = props => {
                 <button
                     type="button"
                     className="btn btn-primary"
-                    onClick={() => userRepo.login()}>Log in</button>
+                    onClick={() => login()}>Log in</button>
             </form>
         </div>
         </div>
-
     </>
 }
