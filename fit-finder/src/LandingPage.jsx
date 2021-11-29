@@ -1,53 +1,71 @@
 import React from 'react';
 import { NewUser } from './NewUser';
 import { Login } from './Login';
-
 import './LandingPage.css'
 import LogoutIcon from '@mui/icons-material/Logout';
+import axios from 'axios'
+import {BACKEND_USERS_URL, getUserPostTransform} from "./constants/constants";
+import {getUser} from "./api/user";
 import { UserRepository } from './api/UserRepository';
+
 export class LandingPage extends React.Component {
+    constructor() {
+        super();
+        this.state = {
+            hasAccount: JSON.parse(window.localStorage.getItem('hasAccount')) || "false",
 
-    state = {
-        hasAccount: JSON.parse(window.localStorage.getItem('hasAccount')) || "false",
+            userName: JSON.parse(window.localStorage.getItem('userName')) || "",
+            password: JSON.parse(window.localStorage.getItem('password')) || "",
 
-        userName: JSON.parse(window.localStorage.getItem('userName')) || "",
-        password: JSON.parse(window.localStorage.getItem('password')) || "",
+            height: JSON.parse(window.localStorage.getItem('height')) || "",
+            gender: JSON.parse(window.localStorage.getItem('gender')) || "",
+            measurementDimensions: JSON.parse(window.localStorage.getItem('measurementDimensions')) || "",
 
-        height: JSON.parse(window.localStorage.getItem('height')) || "",
-        gender: JSON.parse(window.localStorage.getItem('gender')) || "",
-        measurementDimensions: JSON.parse(window.localStorage.getItem('measurementDimensions')) || "",
-        
-        chestSize: JSON.parse(window.localStorage.getItem('chestSize')) || "",
-        sleeveLength: JSON.parse(window.localStorage.getItem('sleeveLength')) || "",
-        neckSize: JSON.parse(window.localStorage.getItem('neckSize')) || "",
-        hipSize: JSON.parse(window.localStorage.getItem('hipSize')) || "",
+            chestSize: JSON.parse(window.localStorage.getItem('chestSize')) || "",
+            sleeveLength: JSON.parse(window.localStorage.getItem('sleeveLength')) || "",
+            neckSize: JSON.parse(window.localStorage.getItem('neckSize')) || "",
+            hipSize: JSON.parse(window.localStorage.getItem('hipSize')) || "",
 
-        referenceBrand:JSON.parse(window.localStorage.getItem('referenceBrand')) || "",
-        referenceSizeTop:JSON.parse(window.localStorage.getItem('referenceSizeTop')) || "",
-        referenceSizeBottom:JSON.parse(window.localStorage.getItem('referenceSizeBottom')) || "",
+            referenceBrand:JSON.parse(window.localStorage.getItem('referenceBrand')) || "",
+            referenceSizeTop:JSON.parse(window.localStorage.getItem('referenceSizeTop')) || "",
+            referenceSizeBottom:JSON.parse(window.localStorage.getItem('referenceSizeBottom')) || "",
 
-        login: false
+            login: false
+        }
     }
 
-    saveNewPrefs(prefs){
+    componentDidMount = async() => {
+        let user = this.getCacheUser();
+        let payload = await getUser(user);
+        if(payload) {
+            let prefs = {};
+            for(const prop of payload) {
+                prefs[getUserPostTransform[prop]] = payload[prop];
+            }
+            this.saveNewPrefs(prefs);
+        }
+
+    getCacheUser = () => {
+        let user = null;
+        if (window.localStorage.getItem('userName')) {
+            user = {
+                'username': window.localStorage.getItem('userName')
+            }
+        }
+        if (window.localStorage.getItem('password')) {
+            if(user) {
+                user['password'] = window.localStorage.getItem('password');
+            }
+        }
+        return user;
+    }
+
+
+    saveNewPrefs = (prefs) => {
         window.localStorage.setItem('hasAccount', JSON.stringify("true"));
-
-        window.localStorage.setItem('userName', JSON.stringify(prefs.userName));
-        window.localStorage.setItem('password', JSON.stringify(prefs.password));
-
-        window.localStorage.setItem('height', JSON.stringify(prefs.height));
-        window.localStorage.setItem('gender', JSON.stringify(prefs.gender));
-        window.localStorage.setItem('measurementDimensions', JSON.stringify(prefs.measurementDimensions));
-
-        window.localStorage.setItem('chestSize', JSON.stringify(prefs.chestSize));
-        window.localStorage.setItem('sleeveLength', JSON.stringify(prefs.sleeveLength));
-        window.localStorage.setItem('neckSize', JSON.stringify(prefs.neckSize));
-        window.localStorage.setItem('hipSize', JSON.stringify(prefs.hipSize));
-
-
-        window.localStorage.setItem('referenceBrand', JSON.stringify(prefs.referenceBrand));
-        window.localStorage.setItem('referenceSizeTop', JSON.stringify(prefs.referenceSizeTop));
-        window.localStorage.setItem('referenceSizeBottom', JSON.stringify(prefs.referenceSizeBottom));
+        for(const property in prefs) {
+            window.localStorage.setItem(property, JSON.stringify(prefs[property]));
+        }
     }
 
     userRepo = new UserRepository();

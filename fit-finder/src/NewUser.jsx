@@ -4,6 +4,28 @@ import './NewUser.css'
 
 export class NewUser extends React.Component {
 
+    constructor() {
+        super();
+        this.state = {
+            userName: "",
+        password:"",
+        typeOfInput:"",
+
+        measurementDimensions:"",
+
+        height:"",
+        gender:"",
+
+        chestSize:"",
+        sleeveLength:"",
+        neckSize:"",
+        hipSize:"",
+
+        referenceBrand:"",
+        referenceSizeTop:"",
+        referenceSizeBottom:"",
+        }
+    }
     userRepo = new UserRepository();
 
     referenceBrands = [
@@ -24,54 +46,54 @@ export class NewUser extends React.Component {
         "XXL"
     ]
 
-    state = {
-        userName: "",
-        password:"",
-        typeOfInput:"",
-
-        measurementDimensions:"",
-
-        height:"",
-        gender:"",
-
-        chestSize:"",
-        sleeveLength:"",
-        neckSize:"",
-        hipSize:"",
-
-        referenceBrand:"",
-        referenceSizeTop:"",
-        referenceSizeBottom:"",
-        
-    }
 
     submitButton(){
+        const {
+            userName,
+            measurementDimensions,
+            chestSize,
+            armLength,
+            referenceBrand,
+            referenceSizeTop,
+            referenceSizeBottom,
+            password,
+            height,
+            gender,
+            sleeveLength,
+            neckSize,
+            hipSize
+        } = this.state;
         this.props.saveNewPrefs({
-            userName: this.state.userName,
-            password: this.state.password,
-
-            measurementDimensions: this.state.measurementDimensions,
-
-            height: this.state.height,
-            gender: this.state.gender,
-
-            chestSize: this.state.chestSize,
-            sleeveLength: this.state.sleeveLength,
-            neckSize: this.state.neckSize,
-            hipSize: this.state.hipSize,
-
-            referenceBrand: this.state.referenceBrand,
-            referenceSizeTop: this.state.referenceSizeTop,
-            referenceSizeBottom: this.state.referenceSizeBottom
+            userName,
+            measurementDimensions,
+            chestSize,
+            armLength,
+            referenceBrand,
+            referenceSizeTop,
+            referenceSizeBottom,
+            password,
+            height,
+            gender,
+            sleeveLength,
+            neckSize,
+            hipSize,
         });
-        this.userRepo.register(this.state.userName, this.state.password,
-                                this.state.chestSize, this.state.height,
-                                this.state.hipSize, this.state.gender,
-                                this.state.sleeveLength, this.state.neckSize);
+        this.userRepo.register(
+            userName,
+            password,
+            chestSize,
+            height,
+            hipSize,
+            gender,
+            sleeveLength,
+            neckSize
+        );
     }
 
     render(){return<>
-
+        <section className={"centeringDiv"}>
+            <h2 className={"subHeader instructions"}>Let's set up your clothing preferences!</h2>
+        </section>
         <form>
             <label for="userName" className={"nameLabel"}>Enter a username: </label>
             <input 
@@ -111,7 +133,9 @@ export class NewUser extends React.Component {
                 this.state.typeOfInput==="Measurements" && <div>
 
                     <form>
-                        <h2 className={"directions instructions"}>Please enter your measurements below!</h2>
+                        <section className={"centeringDiv"}>
+                            <h2 className={"directions instructions"}>Please enter your measurements below!</h2>
+                        </section>
 
                         <label for="measurementDimensions" className={"nameLabel"}>These measurements are in </label>
                         <select className="ml-3" name="measurementDimensions" id="measurementDimensions"

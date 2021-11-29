@@ -9,6 +9,6 @@
     </li>
 </ul>
 <p>
-    {size} can be either "mens" or "womens"
+    {size} can be either "mens" or "womens" and
     {store} = Amazon, Zara, Nike, HM
 </p>
