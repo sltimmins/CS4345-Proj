@@ -162,4 +162,28 @@ module.exports = function routes(app, logger) {
             }
         })
     })
+
+    app.put("/updateSizes", (req, res) => {
+        const id = req.body.id;
+        
+        pool.query("SELECT chest, height, hip, gender, sleeveLength, neck FROM fitfindr.users WHERE id = ?", [id], (err, results) => {
+            console.log(results[0].chest);
+            const chest = req.body.chest || results[0].chest;
+            const height = req.body.height || results[0].height;
+            const hip = req.body.hip || results[0].hip;
+            const gender = req.body.gender || results[0].gender;
+            const sleeveLength = req.body.sleeveLength || results[0].sleeveLength;
+            const neck = req.body.neck || results[0].neck;
+            
+            const sql = "UPDATE fitfindr.users SET chest = ?, height = ?, hip = ?, gender = ?, sleeveLength = ?, neck = ? WHERE id = ?"
+            pool.query(sql, [chest, height, hip, gender, sleeveLength, neck, id], (err, results) => {
+                if(err) {
+                    logger.error("Error updating sizes", err);
+                    res.status(400).send({ success: false, msg: "Error updating sizes" });
+                } else {
+                    res.status(200).send({ success: true, data: results });
+                }
+            })
+        })
+    })
 }

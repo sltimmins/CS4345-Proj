@@ -1,4 +1,5 @@
 import React from 'react';
+import { UserRepository } from './api/UserRepository';
 import './NewUser.css'
 
 export class NewUser extends React.Component {
@@ -7,15 +8,26 @@ export class NewUser extends React.Component {
         super();
         this.state = {
             userName: "",
-            typeOfInput:"",
-            measurementDimensions:"",
-            chestSize:"",
-            armLength:"",
-            referenceBrand:"",
-            referenceSizeTop:"",
-            referenceSizeBottom:"",
+        password:"",
+        typeOfInput:"",
+
+        measurementDimensions:"",
+
+        height:"",
+        gender:"",
+
+        chestSize:"",
+        sleeveLength:"",
+        neckSize:"",
+        hipSize:"",
+
+        referenceBrand:"",
+        referenceSizeTop:"",
+        referenceSizeBottom:"",
         }
     }
+    userRepo = new UserRepository();
+
     referenceBrands = [
         " ",
         "Amazon",
@@ -34,6 +46,7 @@ export class NewUser extends React.Component {
         "XXL"
     ]
 
+
     submitButton(){
         const {
             userName,
@@ -44,6 +57,11 @@ export class NewUser extends React.Component {
             referenceSizeTop,
             referenceSizeBottom,
             password,
+            height,
+            gender,
+            sleeveLength,
+            neckSize,
+            hipSize
         } = this.state;
         this.props.saveNewPrefs({
             userName,
@@ -54,7 +72,22 @@ export class NewUser extends React.Component {
             referenceSizeTop,
             referenceSizeBottom,
             password,
+            height,
+            gender,
+            sleeveLength,
+            neckSize,
+            hipSize,
         });
+        this.userRepo.register(
+            userName,
+            password,
+            chestSize,
+            height,
+            hipSize,
+            gender,
+            sleeveLength,
+            neckSize
+        );
     }
 
     render(){return<>
@@ -62,11 +95,19 @@ export class NewUser extends React.Component {
             <h2 className={"subHeader instructions"}>Let's set up your clothing preferences!</h2>
         </section>
         <form>
-            <label for="userName" className={"nameLabel"}>Enter your name: </label>
+            <label for="userName" className={"nameLabel"}>Enter a username: </label>
             <input 
                 type="text" id="userName" name="userName"
                 value={this.state.userName}
                 onChange={event => this.setState({userName: event.target.value})}
+                className="mb-2"
+            >
+            </input>
+            <label for="password" className={"nameLabel"}>Enter a password: </label>
+            <input 
+                type="password" id="password" name="password"
+                value={this.state.password}
+                onChange={event => this.setState({password: event.target.value})}
                 className="mb-2"
             >
             </input>
@@ -108,7 +149,35 @@ export class NewUser extends React.Component {
                         <section className={"centeringDiv"}>
                             <div className="card mt-3 specialCard">
 
+                                <h3 className="card-header mb-3 cardTitle">General</h3>
+                                <div className="row pr-5">
+                                    <label htmlFor="height"
+                                            className="col-5">Height:</label>
+                                    <input
+                                        type="text" id="height" name="height"
+                                        value={this.state.height}
+                                        onChange={event => this.setState({height: event.target.value})}
+                                        className="mb-1 col-5 align-left"
+                                    >
+                                    </input>
+                                </div>
+                                <div className="row pr-5">
+                                    <label htmlFor="gender"
+                                            className="col-5">Gender:</label>
+                                    <select className="mb-1 col-5 align-left" name="gender" id="gender"
+                                            onChange={event => this.setState({gender: event.target.value})}>
+                                        <option value=""> </option>
+                                        <option value="Male">Male</option>
+                                        <option value="Female">Female</option>
+                                        <option value="Other">Other</option>
+                                        <option value="N/A">Prefer not to answer</option>
+                                    </select>
+                                </div>
+
+                                <br/>
+
                                 <h3 className="card-header mb-3 cardTitle">Shirts and Jackets</h3>
+                                
                                 <div className="row pr-5">
                                     <label htmlFor="chestSize"
                                            className="col-5">Chest</label>
@@ -124,16 +193,45 @@ export class NewUser extends React.Component {
                                 <br/>
 
                                 <div className="row">
-                                    <label htmlFor="chestSize"
-                                           className="col-5">Arm Length</label>
+                                    <label htmlFor="hipSize"
+                                           className="col-5">Hip Circumference</label>
                                     <input
-                                        type="text" id="armLength" name="armLength"
-                                        value={this.state.armLength}
-                                        onChange={event => this.setState({armLength: event.target.value})}
+                                        type="text" id="hipSize" name="hipSize"
+                                        value={this.state.hipSize}
+                                        onChange={event => this.setState({hipSize: event.target.value})}
                                         className="mb-1 col-5"
                                     >
                                     </input>
                                 </div>
+
+                                <br/>
+
+                                <div className="row">
+                                    <label htmlFor="chestSize"
+                                           className="col-5">Arm Length</label>
+                                    <input
+                                        type="text" id="sleeveLength" name="sleeveLength"
+                                        value={this.state.sleeveLength}
+                                        onChange={event => this.setState({sleeveLength: event.target.value})}
+                                        className="mb-1 col-5"
+                                    >
+                                    </input>
+                                </div>
+
+                                <br/>
+
+                                <div className="row">
+                                    <label htmlFor="neckSize"
+                                           className="col-5">Neck Circumference</label>
+                                    <input
+                                        type="text" id="neckSize" name="neckSize"
+                                        value={this.state.neckSize}
+                                        onChange={event => this.setState({neckSize: event.target.value})}
+                                        className="mb-1 col-5"
+                                    >
+                                    </input>
+                                </div>
+
                             </div>
                         </section>
                         
@@ -193,8 +291,9 @@ export class NewUser extends React.Component {
                 </div>
             }
             {
-                (this.state.chestSize && this.state.armLength && this.state.measurementDimensions && this.state.userName) || (this.state.referenceSizeTop && this.state.referenceSizeBottom && this.state.referenceBrand) ?
+                (this.state.chestSize && this.state.sleeveLength && this.state.measurementDimensions && this.state.userName) || (this.state.referenceSizeTop && this.state.referenceSizeBottom && this.state.referenceBrand) ?
                 <button onClick={() => this.submitButton()}
+                        type="button"
                         className="btn btn-primary mt-3 padBottomButton"
                 >Let's get started!</button>
                     : []
