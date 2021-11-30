@@ -43,3 +43,16 @@ main {
 .welcomeBackName {
     font-weight: 700;
 }
+
+.wide {
+    width: 100%;
+}
+
+.buttonHolder button:first-of-type {
+    margin-right: 1rem;
+}
+
+.buttonHolder button {
+    margin-top: 1rem;
+    margin-bottom: 1rem;
+}

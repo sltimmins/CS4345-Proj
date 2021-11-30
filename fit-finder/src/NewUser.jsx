@@ -92,7 +92,7 @@ export class NewUser extends React.Component {
 
     render(){return<>
         <section className={"centeringDiv"}>
-            <h2 className={"subHeader instructions"}>Let's set up your clothing preferences!</h2>
+            {/* <h2 className={"subHeader instructions"}>Let's set up your clothing preferences!</h2> */}
         </section>
         <form>
             <label for="userName" className={"nameLabel"}>Enter a username: </label>

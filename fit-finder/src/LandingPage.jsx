@@ -7,6 +7,7 @@ import axios from 'axios'
 import {BACKEND_USERS_URL, getUserPostTransform} from "./constants/constants";
 import {getUser} from "./api/user";
 import { UserRepository } from './api/UserRepository';
+import { SizeMatch } from './SizeMatch';
 
 export class LandingPage extends React.Component {
     constructor() {
@@ -30,7 +31,8 @@ export class LandingPage extends React.Component {
             referenceSizeTop:JSON.parse(window.localStorage.getItem('referenceSizeTop')) || "",
             referenceSizeBottom:JSON.parse(window.localStorage.getItem('referenceSizeBottom')) || "",
 
-            login: false
+            login: false,
+            signup: false,
         }
     }
 
@@ -44,6 +46,7 @@ export class LandingPage extends React.Component {
             }
             this.saveNewPrefs(prefs);
         }
+    }
 
     getCacheUser = () => {
         let user = null;
@@ -67,7 +70,7 @@ export class LandingPage extends React.Component {
             window.localStorage.setItem(property, JSON.stringify(prefs[property]));
         }
     }
-
+    
     userRepo = new UserRepository();
 
     render(){return<main>
@@ -85,26 +88,30 @@ export class LandingPage extends React.Component {
         }
 
         {
-            this.state.hasAccount === "false" && <div>
+            this.state.hasAccount === "false" ?  
+            <div className={'buttonHolder'}>
 
-            <h1 className={"title"}>Welcome to FitFinder!</h1>
-            <h2 className={"subHeader instructions"}>Let's set up your clothing preferences!</h2>
-
-            <button className="btn btn-outline-secondary mb-3"
-                    onClick={() => this.setState(prevState => ({login: !prevState.login}))}> or login here!</button>
-            
-            {
-                this.state.login === true && <Login />
-            }
-            {
-                this.state.login === false && <NewUser saveNewPrefs={prefs => this.saveNewPrefs(prefs)}/>
-            }
-            </div>
+                <h1 className={"title"}>Welcome to FitFinder!</h1>
+                <h2 className={"subHeader instructions wide"}>Log in or sign up below to find start finding accurate sizes! </h2>
+    
+                <button className="btn btn-block btn-primary col mx-3"
+                        onClick={() => this.setState({signup: false, login: !this.state.login})}>Log In</button>
+                <button className="btn btn-block btn-outline-primary col mx-3"
+                    onClick={() => this.setState({login: false, signup: !this.state.signup})}>Sign Up</button>
+                    {
+                        this.state.login ? <Login didLogin={loginState => this.didLogin(loginState)}/> : []
+                    }
+                    {
+                        this.state.signup ? <NewUser saveNewPrefs={prefs => this.saveNewPrefs(prefs)}/> : []
+                    }
+            </div> : []
         }
 
         {
             this.state.hasAccount === "true" && <div>
                 <h1 className={"welcomeBack"}> Welcome back <span className={"welcomeBackName"}>{this.state.userName}</span>!</h1>
+
+                <SizeMatch/>
 
                 <span className={"generalInfo"}> Your chest size is <span className={"dynamicData"}>{this.state.chestSize}{this.state.measurementDimensions}</span> </span><br/>
                 <span className={"generalInfo"}> Your arm length size is <span className={"dynamicData"}>{this.state.sleeveLength}{this.state.measurementDimensions}</span> </span><br/>
@@ -116,6 +123,8 @@ export class LandingPage extends React.Component {
 
                 </div>
         }
+
+        <br/>
 
     </main>}
 }

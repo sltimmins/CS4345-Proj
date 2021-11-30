@@ -3,6 +3,7 @@
 //
 
 #include "sizeParser.h"
+#include "sizeGenerator.h"
 
 int main(int argc, char const* argv[]) {
     // 3 arguments, Domain & Article of Clothing & JSON file name with directory /// for future dev: 4th argument will be user dimensions so we can return best fit size
