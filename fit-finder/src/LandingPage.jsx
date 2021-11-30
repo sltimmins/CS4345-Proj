@@ -44,6 +44,7 @@ export class LandingPage extends React.Component {
             }
             this.saveNewPrefs(prefs);
         }
+    }
 
     getCacheUser = () => {
         let user = null;
@@ -67,7 +68,7 @@ export class LandingPage extends React.Component {
             window.localStorage.setItem(property, JSON.stringify(prefs[property]));
         }
     }
-
+    
     userRepo = new UserRepository();
 
     render(){return<main>
@@ -94,7 +95,7 @@ export class LandingPage extends React.Component {
                     onClick={() => this.setState(prevState => ({login: !prevState.login}))}> or login here!</button>
             
             {
-                this.state.login === true && <Login />
+                this.state.login === true && <Login didLogin={loginState => this.didLogin(loginState)}/>
             }
             {
                 this.state.login === false && <NewUser saveNewPrefs={prefs => this.saveNewPrefs(prefs)}/>
