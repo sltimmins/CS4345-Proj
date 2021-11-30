@@ -31,7 +31,7 @@ app.use(ExpressAPILogMiddleware(logger, { request: true }));
 routes(app, logger);
 
 // connecting the express object to listen on a particular port as defined in the config object.
-app.listen(config.port, config.host, (e) => {
+app.listen(config.port, (e) => {
   if (e) {
     throw new Error('Internal Server Error');
   }
