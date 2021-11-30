@@ -44,6 +44,7 @@ var typeDimensions = JSON.parse(window.localStorage.getItem('measurementDimensio
 var chestSize= JSON.parse(window.localStorage.getItem('chestSize')) || "";
 var sleeveLength= JSON.parse(window.localStorage.getItem('sleeveLength')) || "";
 var neckSize= JSON.parse(window.localStorage.getItem('neckSize')) || "";
+var hipSize= JSON.parse(window.localStorage.getItem('hipSize')) || "";
 
 export function findMySize(brand){
     if(brand.value == "Amazon" && typeDimensions == "in"){
