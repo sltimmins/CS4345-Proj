@@ -245,7 +245,7 @@ export class NewUser extends React.Component {
                 this.state.typeOfInput==="RefSize" && <div>
 
                     <div className="card padder">
-                        <h2 className="card-header wide">Please select a clothing brand:</h2>
+                        <h2 className="wide">Please select a clothing brand:</h2>
 
                         <select
                             name="referenceBrand" id="referenceBrand"

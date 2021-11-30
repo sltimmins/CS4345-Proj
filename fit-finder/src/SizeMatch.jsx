@@ -4,18 +4,20 @@ import {findMySize} from './algorithm/FindSize.js';
 
 export const SizeMatch = props => {
 
-    // /* eslint-disable no-undef */
-    // chrome.tabs.query({active: true, lastFocusedWindow: true}, tabs => {
-    //     url = tabs[0].url;
-    // });
-
     const [currentSite, setCurrentSite] = useState(undefined);
+    const [fitPref, setFitPref] = useState(undefined);
     const [userSize, setUserSize] = useState(undefined);
 
     let selectWebsite = event => {
         let value = event.target.value;
         setCurrentSite(value);
-        setUserSize(findMySize({value}));
+        setUserSize(findMySize( {value}, "Standard"));
+    }
+
+    let changeFitPref = event => {
+        let value = event.target.value;
+        setFitPref(value);
+        setUserSize(findMySize(currentSite, {value}));
     }
 
     return <> 
@@ -29,11 +31,21 @@ export const SizeMatch = props => {
                 <option value="Nike">Nike</option>
             </select>
         </div>
-        <div className={'center'}>
-            <h2 className={'prompt'}>Your preferred size for is:</h2>
-        </div>
-        <h2>{userSize}</h2>
-    
+
+        {
+            currentSite && <div className={'center'}>
+                <h2 className={'prompt'}>Your preferred size for {currentSite} is:</h2>
+                <h1>{userSize}</h1>
+            </div>
+        }
+
+        <label className="mr-3">I prefer my clothes</label><span> </span>
+            <select className="ml-5" name="prefSize" id="prefSize"
+                    onChange={(e) => changeFitPref(e)}>
+                <option value="Standard">Standard sized</option>
+                <option value="Looser">Loose-fitting</option>
+                <option value="Tigher">Tighter-fitting</option>
+            </select>
     </>
 
 }

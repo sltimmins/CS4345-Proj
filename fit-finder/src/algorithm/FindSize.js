@@ -22,12 +22,21 @@ var AmazonCm = {
 //"SIZE": [ Chest, Hip ]
 var NikeIn = {
     "XS": [[32.5, 35], [32.5, 35]],
-    "S": [[35, 37.5], [35, 37.5]],
-    "M": [[37.5, 41], [37.5, 41]],
-    "L": [[41, 44], [41, 44]],
-    "XL": [[44, 48.5], [44, 47]],
-    "2XL": [[48.5, 53.5],[47, 50.5]],
+    "S": [[35.1, 37.5], [35.1, 37.5]],
+    "M": [[37.6, 41], [37.6, 41]],
+    "L": [[41.1, 44], [41.1, 44]],
+    "XL": [[44.1, 48.5], [44.1, 47]],
+    "XXL": [[48.5, 53.5],[47, 50.5]],
 
+};
+
+var NikeCm = {
+    "XS": [[80, 88], [80,88]],
+    "S": [[88.1, 96], [88.1, 96]],
+    "M": [[96.1, 104], [96.1, 104]],
+    "L": [[104.1, 112], [104.1, 112]],
+    "XL":[[112.1, 124], [112.1, 120]],
+    "XXL": [[124.1, 136], [120.1, 128]],
 };
 
 var prefSize = {
@@ -39,6 +48,8 @@ var prefSize = {
     "XXL": 0,
 }
 
+var sizeArr = ["XS", "S", "M", "L", "XL", "XXL"];
+
 var typeDimensions = JSON.parse(window.localStorage.getItem('measurementDimensions')) || "";
 
 var chestSize= JSON.parse(window.localStorage.getItem('chestSize')) || "";
@@ -46,7 +57,7 @@ var sleeveLength= JSON.parse(window.localStorage.getItem('sleeveLength')) || "";
 var neckSize= JSON.parse(window.localStorage.getItem('neckSize')) || "";
 var hipSize= JSON.parse(window.localStorage.getItem('hipSize')) || "";
 
-export function findMySize(brand){
+export function findMySize(brand, fitPref){
     if(brand.value == "Amazon" && typeDimensions == "in"){
         for (let size in AmazonIn){
             if(AmazonIn[size] == undefined){
@@ -101,6 +112,23 @@ export function findMySize(brand){
         }
     }
     
+    if(brand.value == "Nike" && typeDimensions == "cm"){
+        for (let size in NikeCm){
+            if(NikeCm[size] == undefined){
+                continue;
+            }                
+            for(let sizeAspect in NikeCm[size]){
+                if(chestSize >= NikeCm[size][sizeAspect][0] && chestSize <= NikeCm[size][sizeAspect][1]){
+                    prefSize[size]++;
+                }
+                
+                if(hipSize >= NikeCm[size][sizeAspect][0] && hipSize <= NikeCm[size][sizeAspect][1]){
+                    prefSize[size]++;
+                }
+            }
+        }
+    }
+    
     var defSize = -1;
     var userSize = "";
     for (let size in prefSize){
@@ -108,6 +136,19 @@ export function findMySize(brand){
             defSize = prefSize[size];
             userSize = size;
         }
+    }
+
+    var fitPrefAdd = 0;
+    if(fitPref.value == "Tigher"){
+        fitPrefAdd = -1;
+    }
+    if(fitPref.value == "Looser"){
+        fitPrefAdd = 1;
+    }
+    userSize = sizeArr[sizeArr.indexOf(userSize) + fitPrefAdd];
+
+    if(userSize == undefined){
+        return "Sorry. There is not a size that would fit you.";
     }
 
     return userSize;
