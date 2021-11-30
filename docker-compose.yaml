@@ -13,15 +13,15 @@ services:
     ports:
       - "8000:8000"
     command: go run app/main.go
-  db:
-    image: gcr.io/$CLOUD_RUN_PROJECT_ID/db/$REPO_NAME:$GITHUB_SHA
-    build: ./backend/database
-    # working directory in container to place files
-    working_dir: /app
-    restart: unless-stopped
-    # map code volumes from local to inside working directory, changes made locally will update into the container
-    volumes:
-      - './backend/database:/app'
-    ports:
-      - "5000:5000"
-    command: npm start
+#  db:
+#    image: gcr.io/$CLOUD_RUN_PROJECT_ID/db/$REPO_NAME:$GITHUB_SHA
+#    build: ./backend/database
+#    # working directory in container to place files
+#    working_dir: /app
+#    restart: unless-stopped
+#    # map code volumes from local to inside working directory, changes made locally will update into the container
+#    volumes:
+#      - './backend/database:/app'
+#    ports:
+#      - "5000:5000"
+#    command: npm start
