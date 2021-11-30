@@ -26,8 +26,17 @@ var NikeIn = {
     "M": [[37.5, 41], [37.5, 41]],
     "L": [[41, 44], [41, 44]],
     "XL": [[44, 48.5], [44, 47]],
-    "2XL": [[48.5, 53.5],[47, 50.5]],
+    "XXL": [[48.5, 53.5],[47, 50.5]],
 
+};
+
+var NikeCm = {
+    "XS": [[80, 88], [80,88]],
+    "S": [[88, 96], [88, 96]],
+    "M": [[96, 104], [96, 104]],
+    "L": [[104, 112], [104, 112]],
+    "XL":[[112, 124], [112, 120]],
+    "XXL": [[124, 136], [120, 128]],
 };
 
 var prefSize = {
@@ -95,6 +104,23 @@ export function findMySize(brand){
                 }
                 
                 if(hipSize >= NikeIn[size][sizeAspect][0] && hipSize <= NikeIn[size][sizeAspect][1]){
+                    prefSize[size]++;
+                }
+            }
+        }
+    }
+    
+    if(brand.value == "Nike" && typeDimensions == "cm"){
+        for (let size in NikeCm){
+            if(NikeCm[size] == undefined){
+                continue;
+            }                
+            for(let sizeAspect in NikeCm[size]){
+                if(chestSize >= NikeCm[size][sizeAspect][0] && chestSize <= NikeCm[size][sizeAspect][1]){
+                    prefSize[size]++;
+                }
+                
+                if(hipSize >= NikeCm[size][sizeAspect][0] && hipSize <= NikeCm[size][sizeAspect][1]){
                     prefSize[size]++;
                 }
             }
