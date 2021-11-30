@@ -44,6 +44,7 @@ var typeDimensions = JSON.parse(window.localStorage.getItem('measurementDimensio
 var chestSize= JSON.parse(window.localStorage.getItem('chestSize')) || "";
 var sleeveLength= JSON.parse(window.localStorage.getItem('sleeveLength')) || "";
 var neckSize= JSON.parse(window.localStorage.getItem('neckSize')) || "";
+var hipSize= JSON.parse(window.localStorage.getItem('hipSize')) || "";
 
 export function findMySize(brand){
     if(brand.value == "Amazon" && typeDimensions == "in"){
@@ -77,6 +78,22 @@ export function findMySize(brand){
                     prefSize[size]++;
                 }
                 if(neckSize >= AmazonCm[size][sizeAspect][0] && neckSize <= AmazonCm[size][sizeAspect][1]){
+                    prefSize[size]++;
+                }
+            }
+        }
+        
+        if(brand.value == "Nike" && typeDimensions == "in"){
+        for (let size in NikeIn){
+            if(NikeIn[size] == undefined){
+                continue;
+            }                
+            for(let sizeAspect in NikeIn[size]){
+                if(chestSize >= NikeIn[size][sizeAspect][0] && chestSize <= NikeIn[size][sizeAspect][1]){
+                    prefSize[size]++;
+                }
+                
+                if(hipSize >= NikeIn[size][sizeAspect][0] && hipSize <= NikeIn[size][sizeAspect][1]){
                     prefSize[size]++;
                 }
             }
