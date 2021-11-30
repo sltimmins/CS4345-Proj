@@ -21,7 +21,7 @@ export const SizeMatch = props => {
     return <> 
     
         <div>
-            <label className="mr-3">I'm shopping on </label><span> </span>
+            <label className={"mr-3 shoppingOn"}>I'm shopping on </label><span> </span>
             <select className="ml-5" name="currentWebsite" id="currentWebsite"
                     onChange={(e) => selectWebsite(e)}>
                 <option value=""> </option>
@@ -29,8 +29,9 @@ export const SizeMatch = props => {
                 <option value="Nike">Nike</option>
             </select>
         </div>
-
-        <h2>Your preferred size for is:</h2>
+        <div className={'center'}>
+            <h2 className={'prompt'}>Your preferred size for is:</h2>
+        </div>
         <h2>{userSize}</h2>
     
     </>

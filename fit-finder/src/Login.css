@@ -3,5 +3,10 @@
 }
 
 .card-body label {
-    padding-right: 1rem;
+    padding: .3rem 1rem;
+}
+.selfCenteringCard {
+    width: 95% !important;
+    margin-right: auto !important;
+    margin-left: auto !important;
 }

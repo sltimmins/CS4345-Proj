@@ -139,7 +139,7 @@ export class NewUser extends React.Component {
                             <h2 className={"directions instructions"}>Please enter your measurements below!</h2>
                         </section>
 
-                        <label for="measurementDimensions" className={"nameLabel"}>These measurements are in </label>
+                        <label htmlFor="measurementDimensions" className={"nameLabel"}>These measurements are in </label>
                         <select className="ml-3" name="measurementDimensions" id="measurementDimensions"
                                 onChange={event => this.setState({measurementDimensions: event.target.value})}>
                             <option value=""> </option>
@@ -244,8 +244,8 @@ export class NewUser extends React.Component {
             {
                 this.state.typeOfInput==="RefSize" && <div>
 
-                    <div className="card">
-                        <h2 className="card-header">Please select a clothing brand:</h2>
+                    <div className="card padder">
+                        <h2 className="card-header wide">Please select a clothing brand:</h2>
 
                         <select
                             name="referenceBrand" id="referenceBrand"
@@ -261,7 +261,7 @@ export class NewUser extends React.Component {
                         <br/>
 
                         <div className="row pr-5">
-                            <label for="referenceSizeTop"
+                            <label htmlFor="referenceSizeTop"
                                     className="col-5">Top Size:</label>
                             <select
                                 name="referenceSizeTop" id="referenceSizeTop"
@@ -276,7 +276,7 @@ export class NewUser extends React.Component {
                         </div>
                         <br/>
                         <div className="row pr-5">
-                            <label for="referenceSizeBottom"
+                            <label htmlFor="referenceSizeBottom"
                                     className="col-5">Bottom Size:</label>
                             <select
                                 name="referenceSizeBottom" id="referenceSizeBottom"

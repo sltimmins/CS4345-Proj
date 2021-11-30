@@ -30,7 +30,7 @@ export const Login = props => {
     }
 
     return<>
-        <div className="card">
+        <div className="card selfCenteringCard">
         <h1 className="card-header w-100 text-center mx-auto titleLogin">Login</h1>
         <div className="card-body">
             <form id="registerForm" className="card-body text-center">
