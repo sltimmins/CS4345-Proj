@@ -2,7 +2,7 @@ import React from 'react';
 import { useState } from 'react';
 import { UserRepository } from './api/UserRepository';
 import { LandingPage } from './LandingPage';
-
+ 
 export const Login = props => {
     
     const userRepo = new UserRepository();
@@ -16,8 +16,8 @@ export const Login = props => {
             if(x.success) {
                 setLoggedIn(true);
             }
-        })
-
+        }).then(window.localStorage.setItem("hasAccount", JSON.stringify("true")))
+            .finally(window.location.reload(true));
     }
 
     return<>
