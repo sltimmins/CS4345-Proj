@@ -81,6 +81,22 @@ export function findMySize(brand){
                 }
             }
         }
+        
+        if(brand.value == "Nike" && typeDimensions == "in"){
+        for (let size in NikeIn){
+            if(NikeIn[size] == undefined){
+                continue;
+            }                
+            for(let sizeAspect in NikeIn[size]){
+                if(chestSize >= NikeIn[size][sizeAspect][0] && chestSize <= NikeIn[size][sizeAspect][1]){
+                    prefSize[size]++;
+                }
+                
+                if(hipSize >= NikeIn[size][sizeAspect][0] && hipSize <= NikeIn[size][sizeAspect][1]){
+                    prefSize[size]++;
+                }
+            }
+        }
     }
     
     var defSize = -1;
