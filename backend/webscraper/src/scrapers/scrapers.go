@@ -137,8 +137,10 @@ func ParseNikeSizes(url string) interface{}{
 	//Parse Javascript, as it is javascript rendered
 	c.OnResponse(func(r *colly.Response) {
 		bodyText := string(r.Body)
+		fmt.Println(bodyText)
 		//get the response from body and retrieve the data we need for sizes
 		jsonText := bodyText[strings.Index(bodyText, "JSON.parse(unescape('") + 21: strings.Index(bodyText, "'));</script>\n          \n\n <!-- START dotcom-nav configuration: footer -->\n")]
+		fmt.Println(jsonText)
 		// special encoded character not decoded by function
 		jsonParts := strings.Split(jsonText, "%u2019")
 		// new builder for strings for efficiency
@@ -167,6 +169,16 @@ func ParseNikeSizes(url string) interface{}{
 		}
 
 		jsonText = builder.String()
+
+		jsonParts = strings.Split(jsonText, "%u2")
+		builder.Reset()
+		for _, str := range jsonParts {
+			builder.Grow(builder.Len() + len(str))
+			builder.WriteString(str+"\\\"")
+		}
+
+		jsonText = builder.String()
+
 		jsonText, err := url2.QueryUnescape(jsonText)
 
 		if err != nil {
@@ -541,8 +553,8 @@ func ParseAsosSizes(url string) interface{}{
 func CacheAllScrapers() {
 	WriteToFile("http://z-ecx.images-amazon.com/images/G/02/apparel/size-charts/mens._V367500858_.html","./amazonMensSizes.json", ParseAmazonSizes)
 	WriteToFile("http://z-ecx.images-amazon.com/images/G/02/apparel/size-charts/womens._V367500858_.html","./amazonWomensSizes.json", ParseAmazonSizes)
-	//WriteToFile("https://www.nike.com/size-fit/mens-tops-alpha","./nikeMensSizes.json", ParseNikeSizes)
-	//WriteToFile("https://www.nike.com/size-fit/womens-tops-alpha","./nikeWomensSizes.json", ParseNikeSizes)
+	WriteToFile("https://www.nike.com/size-fit/mens-tops-alpha","./nikeMensSizes.json", ParseNikeSizes)
+	WriteToFile("https://www.nike.com/size-fit/womens-tops-alpha","./nikeWomensSizes.json", ParseNikeSizes)
 	WriteToFile("https://www2.hm.com/en_us/customer-service/sizeguide/ladies.html","./hmWomensSizes.json", ParseHMSizes)
 	WriteToFile("https://www2.hm.com/en_us/customer-service/sizeguide/men.html","./hmMensSizes.json", ParseHMSizes)
 	WriteToFile("http://www.sizecharter.com/brands/zar/womens", "./zaraWomensSizes.json", ParseZaraSizes)
