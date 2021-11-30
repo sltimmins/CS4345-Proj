@@ -9,5 +9,7 @@ FROM node:14
 # Set the working directory within docker image
 WORKDIR /usr/src/app
 
+RUN npm i
+
 # expose port 5000
 EXPOSE $PORT
