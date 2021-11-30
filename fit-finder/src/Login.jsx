@@ -14,10 +14,19 @@ export const Login = props => {
     const login = () => {
         userRepo.login(username, password).then(x => {
             if(x.success) {
-                setLoggedIn(true);
+                window.localStorage.setItem("userID", JSON.stringify(x.data.id));
+                window.localStorage.setItem("userName", JSON.stringify(x.data.username));
+                window.localStorage.setItem("measurementDimensions", JSON.stringify(x.data.measurementDimensions));
+                window.localStorage.setItem("height", JSON.stringify(x.data.height));
+                window.localStorage.setItem("chestSize", JSON.stringify(x.data.chest));
+                window.localStorage.setItem("sleeveLength", JSON.stringify(x.data.sleeveLength));
+                window.localStorage.setItem("neckSize", JSON.stringify(x.data.neck));
+                window.localStorage.setItem("hasAccount", JSON.stringify("true"));
+                window.location.reload(true);
+            } else {
+                window.alert("Incorrect user or password");
             }
-        }).then(window.localStorage.setItem("hasAccount", JSON.stringify("true")))
-            .finally(window.location.reload(true));
+        })
     }
 
     return<>

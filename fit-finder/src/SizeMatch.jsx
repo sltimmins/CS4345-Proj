@@ -30,7 +30,7 @@ export const SizeMatch = props => {
             </select>
         </div>
 
-        <h2>Your preferred size is:</h2>
+        <h2>Your preferred size for is:</h2>
         <h2>{userSize}</h2>
     
     </>

@@ -82,8 +82,9 @@ export function findMySize(brand){
                 }
             }
         }
+    }
         
-        if(brand.value == "Nike" && typeDimensions == "in"){
+    if(brand.value == "Nike" && typeDimensions == "in"){
         for (let size in NikeIn){
             if(NikeIn[size] == undefined){
                 continue;
