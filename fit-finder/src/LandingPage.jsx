@@ -31,7 +31,8 @@ export class LandingPage extends React.Component {
             referenceSizeTop:JSON.parse(window.localStorage.getItem('referenceSizeTop')) || "",
             referenceSizeBottom:JSON.parse(window.localStorage.getItem('referenceSizeBottom')) || "",
 
-            login: false
+            login: false,
+            signup: false,
         }
     }
 
@@ -87,21 +88,23 @@ export class LandingPage extends React.Component {
         }
 
         {
-            this.state.hasAccount === "false" && <div>
+            this.state.hasAccount === "false" ?  
+            <div className={'buttonHolder'}>
 
-            <h1 className={"title"}>Welcome to FitFinder!</h1>
-            <h2 className={"subHeader instructions"}>Let's set up your clothing preferences!</h2>
-
-            <button className="btn btn-outline-secondary mb-3"
-                    onClick={() => this.setState(prevState => ({login: !prevState.login}))}> or login here!</button>
-            
-            {
-                this.state.login === true && <Login didLogin={loginState => this.didLogin(loginState)}/>
-            }
-            {
-                this.state.login === false && <NewUser saveNewPrefs={prefs => this.saveNewPrefs(prefs)}/>
-            }
-            </div>
+                <h1 className={"title"}>Welcome to FitFinder!</h1>
+                <h2 className={"subHeader instructions wide"}>Log in or sign up below to find start finding accurate sizes! </h2>
+    
+                <button className="btn btn-block btn-primary col mx-3"
+                        onClick={() => this.setState({signup: false, login: !this.state.login})}>Log In</button>
+                <button className="btn btn-block btn-outline-primary col mx-3"
+                    onClick={() => this.setState({login: false, signup: !this.state.signup})}>Sign Up</button>
+                    {
+                        this.state.login ? <Login didLogin={loginState => this.didLogin(loginState)}/> : []
+                    }
+                    {
+                        this.state.signup ? <NewUser saveNewPrefs={prefs => this.saveNewPrefs(prefs)}/> : []
+                    }
+            </div> : []
         }
 
         {

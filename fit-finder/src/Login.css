@@ -1,0 +1,7 @@
+.titleLogin {
+    font-size: calc(1.4rem + .1vw);
+}
+
+.card-body label {
+    padding-right: 1rem;
+}
