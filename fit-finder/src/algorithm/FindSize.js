@@ -9,6 +9,15 @@ var AmazonIn = {
     "XXL": [[50,52],[18, 18.5],[35.5, 36]],
 };
 
+var AmazonCm = {
+    "XS":[],
+    "S": [[86.4,94],[35.6, 36.8],[80, 81.3]],
+    "M": [[96.5,104],[38.1, 39.4],[82.55, 83.8]],
+    "L": [[106.7,114.3],[40.6, 41.9],[85, 86.4]],
+    "XL": [[116.8,124.5],[43.2, 44.5],[87.6, 88.9]],
+    "XXL": [[127,132.1],[45.7, 47],[90.2, 91.4]],
+};
+
 var prefSize = {
     "XS": 0,
     "S": 0,
@@ -38,6 +47,24 @@ export function findMySize(brand){
                     prefSize[size]++;
                 }
                 if(neckSize >= AmazonIn[size][sizeAspect][0] && neckSize <= AmazonIn[size][sizeAspect][1]){
+                    prefSize[size]++;
+                }
+            }
+        }
+    }
+    if(brand.value == "Amazon" && typeDimensions == "cm"){
+        for (let size in AmazonCm){
+            if(AmazonCm[size] == undefined){
+                continue;
+            }                
+            for(let sizeAspect in AmazonCm[size]){
+                if(chestSize >= AmazonCm[size][sizeAspect][0] && chestSize <= AmazonCm[size][sizeAspect][1]){
+                    prefSize[size]++;
+                }
+                if(sleeveLength >= AmazonCm[size][sizeAspect][0] && sleeveLength <= AmazonCm[size][sizeAspect][1]){
+                    prefSize[size]++;
+                }
+                if(neckSize >= AmazonCm[size][sizeAspect][0] && neckSize <= AmazonCm[size][sizeAspect][1]){
                     prefSize[size]++;
                 }
             }
