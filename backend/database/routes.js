@@ -59,6 +59,7 @@ module.exports = function routes(app, logger) {
         const gender = req.body.gender;
         const sleeveLength = req.body.sleeveLength;
         const neck = req.body.neck;
+        const measurementDimensions = req.body.measurementDimensions;
         const saltRounds = 10;
     
         const error = (err) => {
@@ -80,9 +81,9 @@ module.exports = function routes(app, logger) {
                     return;
                 }
 
-                const sql = "INSERT INTO fitfindr.users (username, password, chest, height, hip, sleeveLength, neck, gender) VALUES(?, ?, ?, ?, ?, ?, ?, ?)";
+                const sql = "INSERT INTO fitfindr.users (username, password, chest, height, hip, sleeveLength, neck, gender, measurementDimensions) VALUES(?, ?, ?, ?, ?, ?, ?, ?, ?)";
 
-                pool.query(sql, [username, hash, chest, height, hip, sleeveLength, neck, gender], (err, result) => {
+                pool.query(sql, [username, hash, chest, height, hip, sleeveLength, neck, gender, measurementDimensions], (err, result) => {
                     if (err) {
                         error(err);
                         return;
@@ -121,6 +122,7 @@ module.exports = function routes(app, logger) {
                         let sleeveLength = rows[0]["sleeveLength"];
                         let neck = rows[0]["neck"];
                         let gender = rows[0]["gender"];
+                        let measurementDimensions = rows[0]["measurementDimensions"];
 
                         res.status(200).send({
                             success: true,
@@ -131,7 +133,8 @@ module.exports = function routes(app, logger) {
                                     hip: hip, 
                                     sleeveLength: sleeveLength, 
                                     neck: neck, 
-                                    gender: gender 
+                                    gender: gender,
+                                    measurementDimensions: measurementDimensions
                             }
                         });
                     } else {
@@ -160,6 +163,31 @@ module.exports = function routes(app, logger) {
             } else {
                 res.status(200).send({ success: true, data: results });
             }
+        })
+    })
+
+    app.put("/updateSizes", (req, res) => {
+        const id = req.body.id;
+        
+        pool.query("SELECT chest, height, hip, gender, sleeveLength, neck FROM fitfindr.users WHERE id = ?", [id], (err, results) => {
+            console.log(results[0].chest);
+            const chest = req.body.chest || results[0].chest;
+            const height = req.body.height || results[0].height;
+            const hip = req.body.hip || results[0].hip;
+            const gender = req.body.gender || results[0].gender;
+            const sleeveLength = req.body.sleeveLength || results[0].sleeveLength;
+            const neck = req.body.neck || results[0].neck;
+            const measurementDimensions = req.body.measuring || results[0].measurementDimensions;
+            
+            const sql = "UPDATE fitfindr.users SET chest = ?, height = ?, hip = ?, gender = ?, sleeveLength = ?, neck = ?, measurementDimensions = ? WHERE id = ?"
+            pool.query(sql, [chest, height, hip, gender, sleeveLength, neck, measurementDimensions, id], (err, results) => {
+                if(err) {
+                    logger.error("Error updating sizes", err);
+                    res.status(400).send({ success: false, msg: "Error updating sizes" });
+                } else {
+                    res.status(200).send({ success: true, data: results });
+                }
+            })
         })
     })
 }
