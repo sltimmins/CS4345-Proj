@@ -112,6 +112,7 @@ export class LandingPage extends React.Component {
                 <h1 className={"welcomeBack"}> Welcome back <span className={"welcomeBackName"}>{this.state.userName}</span>!</h1>
 
                 <SizeMatch/>
+                <br/><br/>
 
                 <span className={"generalInfo"}> Your chest size is <span className={"dynamicData"}>{this.state.chestSize}{this.state.measurementDimensions}</span> </span><br/>
                 <span className={"generalInfo"}> Your arm length size is <span className={"dynamicData"}>{this.state.sleeveLength}{this.state.measurementDimensions}</span> </span><br/>

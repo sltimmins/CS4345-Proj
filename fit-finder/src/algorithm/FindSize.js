@@ -48,6 +48,8 @@ var prefSize = {
     "XXL": 0,
 }
 
+var sizeArr = ["XS", "S", "M", "L", "XL", "XXL"];
+
 var typeDimensions = JSON.parse(window.localStorage.getItem('measurementDimensions')) || "";
 
 var chestSize= JSON.parse(window.localStorage.getItem('chestSize')) || "";
@@ -55,7 +57,7 @@ var sleeveLength= JSON.parse(window.localStorage.getItem('sleeveLength')) || "";
 var neckSize= JSON.parse(window.localStorage.getItem('neckSize')) || "";
 var hipSize= JSON.parse(window.localStorage.getItem('hipSize')) || "";
 
-export function findMySize(brand){
+export function findMySize(brand, fitPref){
     if(brand.value == "Amazon" && typeDimensions == "in"){
         for (let size in AmazonIn){
             if(AmazonIn[size] == undefined){
@@ -134,6 +136,19 @@ export function findMySize(brand){
             defSize = prefSize[size];
             userSize = size;
         }
+    }
+
+    var fitPrefAdd = 0;
+    if(fitPref.value == "Tigher"){
+        fitPrefAdd = -1;
+    }
+    if(fitPref.value == "Looser"){
+        fitPrefAdd = 1;
+    }
+    userSize = sizeArr[sizeArr.indexOf(userSize) + fitPrefAdd];
+
+    if(userSize == undefined){
+        return "Sorry. There is not a size that would fit you.";
     }
 
     return userSize;
