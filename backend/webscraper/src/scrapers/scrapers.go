@@ -170,11 +170,11 @@ func ParseNikeSizes(url string) interface{}{
 
 		jsonText = builder.String()
 
-		jsonParts = strings.Split(jsonText, "%u2")
+		jsonParts = strings.Split(jsonText, "%u2014")
 		builder.Reset()
 		for _, str := range jsonParts {
 			builder.Grow(builder.Len() + len(str))
-			builder.WriteString(str+"\\\"")
+			builder.WriteString(str+"\t—")
 		}
 
 		jsonText = builder.String()
@@ -553,8 +553,8 @@ func ParseAsosSizes(url string) interface{}{
 func CacheAllScrapers() {
 	WriteToFile("http://z-ecx.images-amazon.com/images/G/02/apparel/size-charts/mens._V367500858_.html","./amazonMensSizes.json", ParseAmazonSizes)
 	WriteToFile("http://z-ecx.images-amazon.com/images/G/02/apparel/size-charts/womens._V367500858_.html","./amazonWomensSizes.json", ParseAmazonSizes)
-	WriteToFile("https://www.nike.com/size-fit/mens-tops-alpha","./nikeMensSizes.json", ParseNikeSizes)
-	WriteToFile("https://www.nike.com/size-fit/womens-tops-alpha","./nikeWomensSizes.json", ParseNikeSizes)
+	//WriteToFile("https://www.nike.com/size-fit/mens-tops-alpha","./nikeMensSizes.json", ParseNikeSizes)
+	//WriteToFile("https://www.nike.com/size-fit/womens-tops-alpha","./nikeWomensSizes.json", ParseNikeSizes)
 	WriteToFile("https://www2.hm.com/en_us/customer-service/sizeguide/ladies.html","./hmWomensSizes.json", ParseHMSizes)
 	WriteToFile("https://www2.hm.com/en_us/customer-service/sizeguide/men.html","./hmMensSizes.json", ParseHMSizes)
 	WriteToFile("http://www.sizecharter.com/brands/zar/womens", "./zaraWomensSizes.json", ParseZaraSizes)
