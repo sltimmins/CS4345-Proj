@@ -4,12 +4,13 @@ const url = "http://ec2-18-217-252-234.us-east-2.compute.amazonaws.com:5000"
 
 export class UserRepository {
 
-    register(username, password, chest, height, hip, gender, sleeveLength, neck){
+    register(username, password, chest, height, hip, gender, sleeveLength, neck, measurementDimensions){
         return new Promise((resolve, reject) => {
           axios.post(`${url}/users/dimensions`,
           {username: username, password: password,
             chest: chest, height: height, hip: hip,
-            gender: gender, sleeveLength: sleeveLength, neck: neck})
+            gender: gender, sleeveLength: sleeveLength, neck: neck,
+            measurementDimensions: measurementDimensions})
                 .then(x => resolve(x.data))
                 .catch(x => {
                     alert(x);

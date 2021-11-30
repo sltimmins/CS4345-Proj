@@ -86,8 +86,10 @@ export class NewUser extends React.Component {
             hipSize,
             gender,
             sleeveLength,
-            neckSize
+            neckSize,
+            measurementDimensions
         );
+        window.location.reload(true);
     }
 
     render(){return<>
