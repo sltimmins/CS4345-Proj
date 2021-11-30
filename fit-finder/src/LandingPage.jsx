@@ -7,6 +7,7 @@ import axios from 'axios'
 import {BACKEND_USERS_URL, getUserPostTransform} from "./constants/constants";
 import {getUser} from "./api/user";
 import { UserRepository } from './api/UserRepository';
+import { SizeMatch } from './SizeMatch';
 
 export class LandingPage extends React.Component {
     constructor() {
@@ -107,6 +108,8 @@ export class LandingPage extends React.Component {
             this.state.hasAccount === "true" && <div>
                 <h1 className={"welcomeBack"}> Welcome back <span className={"welcomeBackName"}>{this.state.userName}</span>!</h1>
 
+                <SizeMatch/>
+
                 <span className={"generalInfo"}> Your chest size is <span className={"dynamicData"}>{this.state.chestSize}{this.state.measurementDimensions}</span> </span><br/>
                 <span className={"generalInfo"}> Your arm length size is <span className={"dynamicData"}>{this.state.sleeveLength}{this.state.measurementDimensions}</span> </span><br/>
                 <span className={"generalInfo"}> Your neck size is <span className={"dynamicData"}>{this.state.neckSize}{this.state.measurementDimensions}</span> </span><br/>
@@ -117,6 +120,8 @@ export class LandingPage extends React.Component {
 
                 </div>
         }
+
+        <br/>
 
     </main>}
 }
